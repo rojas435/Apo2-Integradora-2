@@ -46,6 +46,7 @@ public class Main {
 			System.out.print(
                 "\n<<<<< Welcome to Mercado Libre >>>>>\n"+	
                 "1.	Agregar Producto\n"+
+				"2. Buscar producto\n"+
 				"0. Exit. \n"+
 				"Opcion: ");  
 	}
@@ -54,6 +55,8 @@ public class Main {
 
 			switch(option){
 				case 1-> addProduct();
+
+				case 2 -> searchProduct();
 
 				case 0-> System.out.println("Exit program.");
 						
@@ -105,7 +108,7 @@ public class Main {
 		"\n8. Deportes"+
 		"\n9. Productos de belleza"+
 		"\n10. Cuidado personal"+
-		"11. Juguetes y juegos \n"+
+		"\n11. Juguetes y juegos \n"+
 		"Opcion:");
 
 		int typeOfProduct = reader.nextInt();
@@ -113,11 +116,31 @@ public class Main {
 		System.out.println("Dime cuantas veces se han comprando este producto");
 		int totalSales = reader.nextInt();
 
-		if(controller.addProduct(name, description, totalSales, quantity, typeOfProduct, totalSales)){
+		if(controller.addProduct(name, description, price, quantity, typeOfProduct,totalSales)){
 			System.out.println("Se ha añadido exitosamente");
 		}else{
 			System.out.println("Error, no se ha podido añadir");
 		}
+	}
 
+	public void searchProduct(){
+		System.out.print("Dime por que caracteristica deseas buscar el producto "+
+		"\n1. Nombre"+
+		"\n2. Precio"+
+		"\n3. Categoria"+
+		"4. Numero de veces comprado\n"+
+		"Opcion:");
+
+		int type = reader.nextInt();
+
+		switch(type){
+			case 1:
+			reader.nextLine();
+			System.out.println("Dime el nombre del producto");
+			String name = reader.nextLine();
+			System.out.println(controller.lookForProduct(name));
+			//System.out.println(controller.msjMethod(name));
+			break;
+		}
 	}
 }
