@@ -18,9 +18,6 @@ public class Main {
         controller = new Controller();
 	}
 
-
-
-
 	public static void main(String[] args) {
 			Main main = new Main();
 
@@ -122,7 +119,7 @@ public class Main {
 			System.out.println("Error, no se ha podido añadir");
 		}
 	}
-
+	//test git
 	public void searchProduct(){
 		System.out.print("Dime por que caracteristica deseas buscar el producto "+
 		"\n1. Nombre"+
