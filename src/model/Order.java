@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,21 @@ public class Order {
         this.totalPrice = total;
         return total;
     }
+
+    public Comparator<Order> comparatorForUse(int chosenComparator){
+        switch (chosenComparator){
+            case 1:
+                Comparator<Order> nameComparator = Comparator.comparing(order -> order.getName());
+                return nameComparator;
+            case 2:
+                Comparator<Order> totalPriceComparator = Comparator.comparing(order -> order.getTotalPrice());
+                return totalPriceComparator;
+            case 3:
+                Comparator<Order> dateComparator = Comparator.comparing(order -> order.getDate());
+                return dateComparator;
+        }
+        return null;
+    };
 
     @Override
     public String toString() {

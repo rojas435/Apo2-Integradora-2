@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Comparator;
+
 public class Product {
 
 
@@ -18,6 +20,48 @@ public class Product {
         this.price = price;
         this.quantity = quantity;
         this.totalSales = totalSales;
+        switch (typeOfProduct){
+            case 1:
+                this.typeOfProduct = Categories.BOOKS;
+                break;
+            case 2:
+                this.typeOfProduct = Categories.ELECTRONICS;
+                break;
+            case 3:
+                this.typeOfProduct = Categories.CLOTHES;
+                break;
+            case 4:
+                this.typeOfProduct = Categories.ACCESORIES;
+                break;
+            case 5:
+                this.typeOfProduct = Categories.FOOD;
+                break;
+            case 6:
+                this.typeOfProduct = Categories.DRINKS;
+                break;
+            case 7:
+                this.typeOfProduct = Categories.STATIONERY;
+                break;
+            case 8:
+                this.typeOfProduct = Categories.SPORTS;
+                break;
+            case 9:
+                this.typeOfProduct = Categories.BEAUTY;
+                break;
+            case 10:
+                this.typeOfProduct = Categories.PERSONAL;
+                break;
+            case 11:
+                this.typeOfProduct = Categories.TOYS;
+                break;
+            case 12:
+                this.typeOfProduct = Categories.GAMES;
+                break;
+            case 13:
+                this.typeOfProduct = Categories.KIDS;
+                break;
+
+        };
     }
 
     public String getName() {
@@ -59,6 +103,31 @@ public class Product {
     public void setTotalSales(int totalSales) {
         this.totalSales = totalSales;
     }
+
+    public Categories getTypeOfProduct() {
+        return typeOfProduct;
+    }
+
+    public void setTypeOfProduct(Categories typeOfProduct) {
+        this.typeOfProduct = typeOfProduct;
+    }
+    public Comparator<Product> comparatorForUse(int chosenComparator){
+        switch (chosenComparator){
+            case 1:
+                Comparator<Product> nameComparator = Comparator.comparing(product -> product.getName());
+                return nameComparator;
+            case 2:
+                Comparator<Product> priceComparator = Comparator.comparing(product -> product.getPrice());
+                return priceComparator;
+            case 3:
+                Comparator<Product> categoryComparator = Comparator.comparing(product -> product.getTypeOfProduct());
+                return categoryComparator;
+            case 4:
+                Comparator<Product> numSalesComparator = Comparator.comparing(product -> product.getTotalSales());
+                return numSalesComparator;
+        }
+        return null;
+    };
 
     @Override
     public String toString() {

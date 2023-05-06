@@ -1,5 +1,7 @@
 package model;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class Shop {
@@ -73,12 +75,105 @@ public class Shop {
         return;
     };
 
+    public <T> void binarySearchP(String attributeName, T value) throws NoSuchFieldException, IllegalAccessException {
+        int comp = 0;
+        switch (attributeName){
+            case "name":
+                comp =1;
+                break;
+            case "price":
+                comp = 2;
+                break;
+            case "category":
+                comp = 3;
+                break;
+            case "totalSales":
+                comp = 4;
+                break;
+        }
+        binarySearchP(attributeName, value, inventory.get(0).comparatorForUse(comp));
+        return;
+    };
 
-    
+    public <T> int binarySearchP(String attributeName, T value, Comparator<Product> comparator) throws NoSuchFieldException, IllegalAccessException {
+        int initialIndex = 0;
+        int finalIndex = inventory.size() - 1;
 
+        while (initialIndex <= finalIndex) {
+            int middleIndex = (initialIndex + finalIndex) / 2;
 
-    //Este metodo me quedo rarito pero funciona, retorna el objeto LITERALMENTE
-    
+            Product middleObject = (Product) inventory.get(middleIndex);
+
+            Field field = middleObject.getClass().getDeclaredField(attributeName);
+            field.setAccessible(true);
+
+            Object middleValue = field.get(middleObject);
+
+            int comparison;
+            if (middleValue instanceof String && value instanceof String) {
+                comparison = ((String) middleValue).compareTo((String) value);
+            } else if (middleValue instanceof Integer && value instanceof Integer) {
+                comparison = Integer.compare((Integer) middleValue, (Integer) value);
+            } else {
+                throw new IllegalArgumentException("Cannot compare " + middleValue.getClass().getSimpleName() + " with " + value.getClass().getSimpleName());
+            }
+            if (comparison == 0) {
+                return middleIndex;
+            } else if (comparison < 0) {
+                initialIndex = middleIndex + 1;
+            } else {
+                finalIndex = middleIndex - 1;
+            }
+        }
+
+        return -1;
+    }
+
+    public void binarySearchO(String attributeName, Order value) throws NoSuchFieldException, IllegalAccessException {
+        int comp = 0;
+        switch (attributeName){
+            case "name":
+                comp =1;
+                break;
+            case "totalPrice":
+                comp = 2;
+                break;
+            case "date":
+                comp = 3;
+                break;
+        }
+        binarySearchO(attributeName, value, value.comparatorForUse(comp));
+        return;
+    };
+
+    public <Order> int binarySearchO(String attributeName, Order value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
+        int initialIndex = 0;
+        int finalIndex = orders.size() - 1;
+
+        while (initialIndex <= finalIndex) {
+            int middleIndex = (initialIndex + finalIndex) / 2;
+
+            Order middleObject = (Order) orders.get(middleIndex);
+
+            Field field = middleObject.getClass().getDeclaredField(attributeName);
+            field.setAccessible(true);
+
+            Object middleValue = field.get(middleObject);
+
+            int comparison = comparator.compare(middleObject, value);
+
+            if (comparison == 0) {
+                return middleIndex;
+            } else if (comparison < 0) {
+                initialIndex = middleIndex + 1;
+            } else {
+                finalIndex = middleIndex - 1;
+            }
+        }
+
+        return -1;
+    }
+
 
 
 }
