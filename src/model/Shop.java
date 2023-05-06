@@ -12,6 +12,14 @@ public class Shop {
         this.inventory = new ArrayList<>();
     }
 
+    public void showInv(){
+        int i = 0;
+        while(i< inventory.size()){
+            System.out.println(inventory.get(i).getName());
+        }
+        return;
+    }
+
 
 
     public boolean addProduct(String name, String description, double price, int quantity, int typeOfProduct, int totalSales){
@@ -22,23 +30,32 @@ public class Shop {
         }
     }
 
-
-
-    public String lookForProduct(String name){
-        String msj = "";
-        for(int i = 0; i<inventory.size(); i++){
-            if(inventory.get(i).getName().equalsIgnoreCase(name)){
-                return name;
+    public void eliminateProduct(String name){
+        for(int i = 0; i< inventory.size()-1; i++){
+            if(inventory.get(i)!=null){
+                if(inventory.get(i).getName().equals(name)){
+                    inventory.remove(inventory.get(i));
+                    return;
+                }
             }
         }
+        return;
+    };
 
-        return msj;
-    }
+    public int createOrder(String name){
+        Order order = new Order(name);
+        orders.add(order);
+        return orders.size()-1;
+    };
+
+    public void addProductToOrder(int orderP, String productName, int quantity){
+
+    };
 
 
 
     //Este metodo me quedo rarito pero funciona, retorna el objeto LITERALMENTE
-    public Product lookForProduct2(String name){
+    public Product searchP(String name){
         for(int i = 0; i<inventory.size(); i++){
             if(inventory.get(i).getName().equalsIgnoreCase(name)){
                 return inventory.get(i);
@@ -49,7 +66,7 @@ public class Shop {
     //Este metodo solo hace que se despliegue como String
     public String msjMethod(String name){
         String msj = "";
-        Product inventory = (Product)lookForProduct2(name);
+        Product inventory = (Product)searchP(name);
         if(inventory != null){
             msj+= inventory;
         }else{

@@ -1,5 +1,6 @@
 package ui;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import model.*;
 
@@ -42,8 +43,12 @@ public class Main {
 	public void printMenu(){
 			System.out.print(
                 "\n<<<<< Welcome to Mercado Libre >>>>>\n"+	
-                "1. Agregar Producto\n"+
-				"2. Buscar producto\n"+
+                "1. Add Product\n"+
+				"2. Eliminate product\n"+
+				"3. Search product\n"+
+				"4. Create Order\n"+
+				"5. Load Inventory\n"+
+				"6. Save Inventory\n"+
 				"0. Exit \n"+
 				"Opcion: ");  
 	}
@@ -55,7 +60,19 @@ public class Main {
 					addProduct();
 					break;
 				case 2:
+					eliminateProduct();
+					break;
+				case 3:
 					searchProduct();
+					break;
+				case 4:
+					createOrder();
+					break;
+				case 5:
+					loadInventory();
+					break;
+				case 6:
+					saveInventory();
 					break;
 				case 0:
 					System.out.println("Exit program.");
@@ -140,9 +157,69 @@ public class Main {
 			reader.nextLine();
 			System.out.println("Dime el nombre del producto");
 			String name = reader.nextLine();
-			System.out.println(shop.lookForProduct(name));
+			System.out.println(shop.searchP(name));
 			//System.out.println(controller.msjMethod(name));
 			break;
 		}
 	}
+
+	public void eliminateProduct(){
+		System.out.println("\nPlease choose a product to eliminate");
+		shop.showInv();
+		String productName = reader.nextLine();
+		shop.eliminateProduct(productName);
+		System.out.println("Producto eliminado exitosamente.");
+	};
+
+	public void createOrder() {
+		System.out.println("Whats your name:");
+		String name = reader.nextLine();
+		int orderP = shop.createOrder(name);
+		int orderOpcion = 0;
+		do {
+			System.out.println("\nRealizar pedido:");
+			System.out.println("1. Agregar producto al pedido");
+			System.out.println("2. Eliminar producto del pedido");
+			System.out.println("3. Ver pedido actual");
+			System.out.println("4. Realizar pedido");
+			System.out.println("5. Cancelar pedido");
+
+			orderOpcion = reader.nextInt();
+
+			switch (orderOpcion) {
+				case 1:
+					System.out.println("\nProduct Name:");
+					String addedProduct = reader.nextLine();
+					System.out.println("Quantity of Product:");
+					int quantity = reader.nextInt();
+					shop.addProductToOrder(orderP, addedProduct, quantity);
+					break;
+				case 2:
+					System.out.println("\nIngrese el nombre del producto a eliminar:");
+					String nombreProductoEliminarPedido = scanner.nextLine();
+					System.out.println("Ingrese la cantidad:");
+					int cantidadEliminar = Integer.parseInt(scanner.nextLine());
+					tienda.eliminarProductoDePedido(pedido, nombreProductoEliminarPedido, cantidadEliminar);
+					break;
+				case 3:
+					ArrayList<ItemPedido> itemsPedido = pedido.getItems();
+					for (ItemPedido itemPedido : itemsPedido) {
+						System.out.println(itemPedido.getProducto().getNombre() + " - " + itemPedido.getCantidad());
+					}
+					break;
+				case 4:
+					if (tienda.hayStock(pedido)) {
+						tienda.realizarPedido(pedido);
+						System.out
+					} ;
+				case 5:
+					break;
+			}
+		} while (orderOpcion != 5 || orderOpcion != 4);
+		return;
+	}
+
+	public void loadInventory(){};
+
+	public void saveInventory(){};
 }

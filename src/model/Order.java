@@ -7,14 +7,13 @@ import java.util.List;
 public class Order {
     private String name;
     private ArrayList<OrderedItem> items;
-    private ArrayList<Product> productList;
     private double totalPrice;
     private Date date;
 
-    public Order(String name, ArrayList<Product> productList) {
+    public Order(String name) {
         this.name = name;
-        this.productList = productList;
-        this.totalPrice = calcularPrecioTotal();
+        this.items = new ArrayList<OrderedItem>();
+        this.totalPrice = 0;
         this.date = new Date();
     }
 
@@ -32,14 +31,6 @@ public class Order {
 
     public void setItems(ArrayList<OrderedItem> items) {
         this.items = items;
-    }
-
-    public ArrayList<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
     }
 
     public double getTotalPrice() {
@@ -60,8 +51,8 @@ public class Order {
 
     private double calcularPrecioTotal() {
         double total = 0.0;
-        for (Product producto : productList) {
-            total += producto.getPrice();
+        for (OrderedItem order : items) {
+            total += order.getProduct().getPrice()*order.getQuantity();
         }
         return total;
     }

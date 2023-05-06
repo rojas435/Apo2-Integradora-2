@@ -11,7 +11,7 @@ public class Product {
     private int quantity;
     private int totalSales;
 
-    //Constructor 
+    //Constructor
     public Product(String name, String desription, double price, int quantity, int typeOfProduct, int totalSales){
         this.name = name;
         this.description = desription;
