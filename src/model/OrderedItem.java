@@ -22,7 +22,7 @@ public class OrderedItem {
         return quantity;
     }
 
-    public void setQuantity(int Quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
