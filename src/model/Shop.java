@@ -118,6 +118,7 @@ public class Shop {
                 throw new IllegalArgumentException("Cannot compare " + middleValue.getClass().getSimpleName() + " with " + value.getClass().getSimpleName());
             }
             if (comparison == 0) {
+                System.out.println(inventory.get(middleIndex).toString());
                 return middleIndex;
             } else if (comparison < 0) {
                 initialIndex = middleIndex + 1;
