@@ -57,9 +57,11 @@ public class Main {
 
 			switch(option){
 				case 1:
+					shop.showInv();
 					addProduct();
 					break;
 				case 2:
+					shop.showInv();
 					eliminateProduct();
 					break;
 				case 3:
