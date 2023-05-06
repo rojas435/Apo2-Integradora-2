@@ -52,6 +52,26 @@ public class Shop {
 
     };
 
+    public void removeProductToOrder(int orderP, String productName, int quantity){
+
+    };
+
+    public void checkOrder(int orderP){
+        orders.get(orderP).calculateTotalPrice();
+        System.out.println(orders.get(orderP).toString());
+        for(int i = 0; i<orders.get(orderP).getItems().size()-1;i++){
+            System.out.println(orders.get(orderP).getItems().get(i).productData());
+        }
+        return;
+    };
+
+    public boolean stockCheck(int orderP){
+        return false;
+    };
+
+    public void processOrder(int orderP){
+        return;
+    };
 
 
     //Este metodo me quedo rarito pero funciona, retorna el objeto LITERALMENTE

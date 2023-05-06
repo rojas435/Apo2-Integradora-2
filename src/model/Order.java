@@ -49,11 +49,21 @@ public class Order {
         this.date = date;
     }
 
-    private double calcularPrecioTotal() {
+    public double calculateTotalPrice() {
         double total = 0.0;
         for (OrderedItem order : items) {
             total += order.getProduct().getPrice()*order.getQuantity();
         }
+        this.totalPrice = total;
         return total;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "name='" + name + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", date=" + date +
+                '}';
     }
 }

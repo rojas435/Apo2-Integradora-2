@@ -30,4 +30,11 @@ public class OrderedItem {
         return quantity * product.getPrice();
     }
 
+    public String productData(){
+        return "Order{" +
+                "name='" + product.getName() + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + product.getPrice() +
+                '}';
+    }
 }

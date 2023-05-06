@@ -185,32 +185,29 @@ public class Main {
 			System.out.println("5. Cancelar pedido");
 
 			orderOpcion = reader.nextInt();
+			int quantity = 0;
 
 			switch (orderOpcion) {
 				case 1:
 					System.out.println("\nProduct Name:");
 					String addedProduct = reader.nextLine();
 					System.out.println("Quantity of Product:");
-					int quantity = reader.nextInt();
+					quantity = reader.nextInt();
 					shop.addProductToOrder(orderP, addedProduct, quantity);
 					break;
 				case 2:
-					System.out.println("\nIngrese el nombre del producto a eliminar:");
-					String nombreProductoEliminarPedido = scanner.nextLine();
-					System.out.println("Ingrese la cantidad:");
-					int cantidadEliminar = Integer.parseInt(scanner.nextLine());
-					tienda.eliminarProductoDePedido(pedido, nombreProductoEliminarPedido, cantidadEliminar);
+					System.out.println("\nProduct Name:");
+					String eliminatedProduct = reader.nextLine();
+					System.out.println("Quantity of Product:");
+					quantity = reader.nextInt();
+					shop.removeProductToOrder(orderP, eliminatedProduct, quantity);
 					break;
 				case 3:
-					ArrayList<ItemPedido> itemsPedido = pedido.getItems();
-					for (ItemPedido itemPedido : itemsPedido) {
-						System.out.println(itemPedido.getProducto().getNombre() + " - " + itemPedido.getCantidad());
-					}
+					shop.checkOrder(orderP);
 					break;
 				case 4:
-					if (tienda.hayStock(pedido)) {
-						tienda.realizarPedido(pedido);
-						System.out
+					if (shop.stockCheck(orderP)==true) {
+						shop.processOrder(orderP);
 					} ;
 				case 5:
 					break;

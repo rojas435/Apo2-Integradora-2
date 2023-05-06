@@ -59,4 +59,16 @@ public class Product {
     public void setTotalSales(int totalSales) {
         this.totalSales = totalSales;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", typeOfProduct=" + typeOfProduct +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", totalSales=" + totalSales +
+                '}';
+    }
 }
