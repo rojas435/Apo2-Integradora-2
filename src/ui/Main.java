@@ -42,22 +42,27 @@ public class Main {
 	public void printMenu(){
 			System.out.print(
                 "\n<<<<< Welcome to Mercado Libre >>>>>\n"+	
-                "1.	Agregar Producto\n"+
+                "1. Agregar Producto\n"+
 				"2. Buscar producto\n"+
-				"0. Exit. \n"+
+				"0. Exit \n"+
 				"Opcion: ");  
 	}
 
 		public void executeOption(int option){
 
 			switch(option){
-				case 1-> addProduct();
-
-				case 2 -> searchProduct();
-
-				case 0-> System.out.println("Exit program.");
-						
-				default-> System.out.println("Invalid Option");
+				case 1:
+					addProduct();
+					break;
+				case 2:
+					searchProduct();
+					break;
+				case 0:
+					System.out.println("Exit program.");
+					break;
+				default:
+					System.out.println("Invalid Option");
+					break;
 			}
 		}
 	
