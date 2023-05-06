@@ -5,6 +5,8 @@ public class Product {
 
     private String name;
     private String description;
+
+    private Categories typeOfProduct;
     private double price;
     private int quantity;
     private int totalSales;

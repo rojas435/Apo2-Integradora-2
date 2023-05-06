@@ -10,12 +10,12 @@ public class Main {
 
     private Scanner reader;
 
-	private Controller controller;
+	private Shop shop;
 	
 
 	public Main() {
 		reader = new Scanner(System.in); 
-        controller = new Controller();
+        Shop shop = new Shop();
 	}
 
 	public static void main(String[] args) {
@@ -113,7 +113,7 @@ public class Main {
 		System.out.println("Dime cuantas veces se han comprando este producto");
 		int totalSales = reader.nextInt();
 
-		if(controller.addProduct(name, description, price, quantity, typeOfProduct,totalSales)){
+		if(shop.addProduct(name, description, price, quantity, typeOfProduct,totalSales)){
 			System.out.println("Se ha añadido exitosamente");
 		}else{
 			System.out.println("Error, no se ha podido añadir");
@@ -135,7 +135,7 @@ public class Main {
 			reader.nextLine();
 			System.out.println("Dime el nombre del producto");
 			String name = reader.nextLine();
-			System.out.println(controller.lookForProduct(name));
+			System.out.println(shop.lookForProduct(name));
 			//System.out.println(controller.msjMethod(name));
 			break;
 		}
