@@ -74,27 +74,11 @@ public class Shop {
     };
 
 
-    //Este metodo me quedo rarito pero funciona, retorna el objeto LITERALMENTE
-    public Product searchP(String name){
-        for(int i = 0; i<inventory.size(); i++){
-            if(inventory.get(i).getName().equalsIgnoreCase(name)){
-                return inventory.get(i);
-            }
-        }
-        return null;
-    }
     
-    //Este metodo solo hace que se despliegue como String
-    public String msjMethod(String name){
-        String msj = "";
-        Product inventory = (Product)searchP(name);
-        if(inventory != null){
-            msj+= inventory;
-        }else{
-            return "Ese producto no existe";
-        }
-        return msj;
-    }
+
+
+    //Este metodo me quedo rarito pero funciona, retorna el objeto LITERALMENTE
+    
 
 
 }

@@ -45,7 +45,7 @@ public class Main {
                 "\n<<<<< Welcome to Mercado Libre >>>>>\n"+	
                 "1. Add Product\n"+
 				"2. Eliminate product\n"+
-				"3. Search product\n"+
+				"3. Search\n"+
 				"4. Create Order\n"+
 				"5. Load Inventory\n"+
 				"6. Save Inventory\n"+
@@ -63,7 +63,7 @@ public class Main {
 					eliminateProduct();
 					break;
 				case 3:
-					searchProduct();
+					search();
 					break;
 				case 4:
 					createOrder();
@@ -141,26 +141,69 @@ public class Main {
 			System.out.println("Error, no se ha podido añadir");
 		}
 	}
-	//test git
-	public void searchProduct(){
-		System.out.print("Dime por que caracteristica deseas buscar el producto "+
-		"\n1. Nombre"+
-		"\n2. Precio"+
-		"\n3. Categoria"+
-		"4. Numero de veces comprado\n"+
-		"Opcion:");
 
-		int type = reader.nextInt();
 
-		switch(type){
+
+	public void search(){
+		System.out.println("Tell me what you want to search"+
+		"\n1. Search Product"+
+		"2. Search Order\n"+
+		"Option: ");
+		int option = reader.nextInt();
+
+		switch(option){
 			case 1:
-			reader.nextLine();
-			System.out.println("Dime el nombre del producto");
-			String name = reader.nextLine();
-			System.out.println(shop.searchP(name));
-			//System.out.println(controller.msjMethod(name));
+			System.out.print("Dime por que caracteristica deseas buscar el producto "+
+			"\n1. Name"+
+			"\n2. Price"+
+			"\n3. Categorie"+
+			"\n4. Number of times of buying"+
+			"5. Return to option\n"+
+			"Option:");
+			int type = reader.nextInt();
+			switch(type){
+				case 1:
+				reader.nextLine();
+				System.out.println("Dime el nombre del producto");
+				String name = reader.nextLine();
+				
+				break;
+
+
+			}
+
+			case 2:
+			System.out.println("Tell me for what characteristics you want to search: "+
+			"\n1. Name of buyer"+
+			"\n2. Total Price"+
+			"3. Date of purchase\n"+
+			"Option");
+
+			int option2 = reader.nextInt();
+
+			switch(option2){
+				case 1:
+				System.out.println("Tell me the name of the buyer: ");
+				String nameBuyer = reader.nextLine();
+				System.out.println();
+				break;
+
+				case 2:
+				System.out.println("");
+				System.out.println();
+				break;
+
+				case 3:
+				System.out.println("Tell me date of the purchase");
+				String date = reader.nextLine();
+				System.out.println();
+				break;
+
+			}
+
 			break;
 		}
+		
 	}
 
 	public void eliminateProduct(){
