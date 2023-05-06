@@ -208,6 +208,9 @@ public class Main {
 				case 4:
 					if (shop.stockCheck(orderP)==true) {
 						shop.processOrder(orderP);
+					}else{
+						System.out.println("Theres more products in your order than in the inventory");
+						orderOpcion=0;
 					} ;
 				case 5:
 					break;

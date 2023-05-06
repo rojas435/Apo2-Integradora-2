@@ -15,7 +15,7 @@ public class Shop {
     public void showInv(){
         int i = 0;
         while(i< inventory.size()){
-            System.out.println(inventory.get(i).getName());
+            System.out.println(inventory.get(i).toString());
         }
         return;
     }
