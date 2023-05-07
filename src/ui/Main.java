@@ -194,7 +194,7 @@ public class Main {
 
 	public void search() throws NoSuchFieldException, IllegalAccessException {
 		System.out.println("Tell me what you want to search"+
-		"\n1. Search Product"+
+		"\n1. Search Product\n"+
 		"2. Search Order\n"+
 		"Option: ");
 		int option = reader.nextInt();
@@ -246,8 +246,8 @@ public class Main {
 
 			case 2:
 			System.out.println("Tell me for what characteristics you want to search: "+
-			"\n1. Name of buyer"+
-			"\n2. Total Price"+
+			"\n1. Name of buyer\n"+
+			"2. Total Price\n"+
 			"3. Date of purchase\n"+
 			"Option");
 
@@ -256,6 +256,7 @@ public class Main {
 			switch(option2){
 				case 1:
 				System.out.println("Tell me the name of the buyer: ");
+				reader.nextLine();
 				String nameBuyer = reader.nextLine();
 				shop.binarySearchO(option2,nameBuyer,null );
 				break;

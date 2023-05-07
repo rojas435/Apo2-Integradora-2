@@ -171,7 +171,7 @@ public class Shop {
         switch (nameBuyer){
             case 1:
                 attName = "name";
-                printRangeName(binarySearchPS(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((String) value));
+                printRangeName(binarySearchPSO(attName, value,  inventory.get(0).comparatorForUse(nameBuyer)), ((String) value));
                 break;
 
             //case 2:
@@ -185,6 +185,43 @@ public class Shop {
         }
         return;
     };
+
+
+    public <T> int binarySearchPSO(String attributeName, T value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
+        int initialIndex = 0;
+        int finalIndex = orders.size();
+        Collections.sort(orders,comparator);
+
+        while (initialIndex <= finalIndex) {
+            int middleIndex = (initialIndex + finalIndex) / 2;
+
+            Order middleObject = (Order) orders.get(middleIndex);
+
+            Field field = middleObject.getClass().getDeclaredField(attributeName);
+            field.setAccessible(true);
+
+            Object middleValue = field.get(middleObject);
+
+            int comparison;
+            if (middleValue instanceof String && value instanceof String) {
+                comparison = ((String) middleValue).compareTo((String) value);
+            } else if (middleValue instanceof Categories && value instanceof Categories) {
+                comparison = ((Categories) middleValue).compareTo((Categories) value);
+            } else {
+                throw new IllegalArgumentException("Cannot compare " + middleValue.getClass().getSimpleName() + " with " + value.getClass().getSimpleName());
+            }
+            if (comparison == 0) {
+                return middleIndex;
+            } else if (comparison < 0) {
+                initialIndex = middleIndex + 1;
+            } else {
+                finalIndex = middleIndex - 1;
+            }
+        }
+
+        return -1;
+    }
+
 
     public <T> void binarySearchP(int attributeName, T value, T value2) throws NoSuchFieldException, IllegalAccessException {
         int comp = 0;
