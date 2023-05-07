@@ -78,6 +78,9 @@ public class Main {
 				case 6:
 					saveInventory();
 					break;
+				case 7:
+					shop.showInv();
+					break;
 				case 0:
 					System.out.println("Exit program.");
 					break;
@@ -113,6 +116,7 @@ public class Main {
 		shop.addProduct("Checho", "description", 30,1, 5,28);
 		shop.addProduct("Santiago", "el negro", 100,1, 11,127);
 	};
+
 
 	public void addProduct(){
 		reader.nextLine();
@@ -224,10 +228,11 @@ public class Main {
 				case 1:
 				System.out.println("Tell me the name of the buyer: ");
 				String nameBuyer = reader.nextLine();
-				System.out.println();
+				shop.binarySearchO(option2,nameBuyer,null );
 				break;
 
 				case 2:
+				reader.nextLine();
 				System.out.println("");
 				System.out.println();
 				break;
@@ -251,21 +256,23 @@ public class Main {
 		shop.showInv();
 		String productName = reader.nextLine();
 		shop.eliminateProduct(productName);
-		System.out.println("Producto eliminado exitosamente.");
+		System.out.println("Product eliminated!");
 	};
 
 	public void createOrder() {
 		System.out.println("Whats your name:");
 		String name = reader.nextLine();
+		reader.nextLine();
 		int orderP = shop.createOrder(name);
 		int orderOpcion = 0;
 		do {
-			System.out.println("\nRealizar pedido:");
-			System.out.println("1. Agregar producto al pedido");
-			System.out.println("2. Eliminar producto del pedido");
-			System.out.println("3. Ver pedido actual");
-			System.out.println("4. Realizar pedido");
-			System.out.println("5. Cancelar pedido");
+			System.out.println("\nRealizar pedido: \n"+
+			"1. Agregar producto al pedido\n"+
+			"2. Eliminar producto del pedido\n"+
+			"3. Ver pedido actual\n"+
+			"4. Realizar pedido\n"+
+			"5. Cancelar pedido\n"+
+			"Option:");
 
 			orderOpcion = reader.nextInt();
 			int quantity = 0;
@@ -273,20 +280,22 @@ public class Main {
 			switch (orderOpcion) {
 				case 1:
 					System.out.println("\nProduct Name:");
+					reader.nextLine();
 					String addedProduct = reader.nextLine();
 					System.out.println("Quantity of Product:");
 					quantity = reader.nextInt();
-					shop.addProductToOrder(orderP, addedProduct, quantity);
+					shop.addProductToOrder(name, addedProduct, quantity);
 					break;
 				case 2:
 					System.out.println("\nProduct Name:");
+					reader.nextLine();
 					String eliminatedProduct = reader.nextLine();
 					System.out.println("Quantity of Product:");
 					quantity = reader.nextInt();
-					shop.removeProductToOrder(orderP, eliminatedProduct, quantity);
+					shop.removeProductToOrder(name, eliminatedProduct, quantity);
 					break;
 				case 3:
-					shop.checkOrder(orderP);
+					shop.checkOrder(name);
 					break;
 				case 4:
 					if (shop.stockCheck(orderP)==true) {
@@ -296,6 +305,7 @@ public class Main {
 						orderOpcion=0;
 					} ;
 				case 5:
+					shop.deleteOrder(name);
 					break;
 			}
 		} while (orderOpcion != 5 || orderOpcion != 4);

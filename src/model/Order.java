@@ -30,6 +30,20 @@ public class Order {
         return items;
     }
 
+
+    public void addProduct(Product productFound) {
+        items.add(new OrderedItem(productFound, 0));
+    }
+
+    public void eliminate(OrderedItem product) {
+        items.remove(product);
+    }
+
+    public void cancelOrder(){
+        items.clear();
+        System.out.println("Pedido eliminado con exito");
+    }
+
     public void setItems(ArrayList<OrderedItem> items) {
         this.items = items;
     }

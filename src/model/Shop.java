@@ -1,8 +1,10 @@
 package model;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class Shop {
     private ArrayList<Product> inventory;
@@ -12,6 +14,7 @@ public class Shop {
 
     public Shop(){
         this.inventory = new ArrayList<>();
+        this.orders = new ArrayList<>();
     }
 
     public void showInv(){
@@ -47,29 +50,128 @@ public class Shop {
         return;
     };
 
+
     public int createOrder(String name){
         Order order = new Order(name);
         orders.add(order);
         return orders.size()-1;
     };
 
-    public void addProductToOrder(int orderP, String productName, int quantity){
+    
 
-    };
+   
 
-    public void removeProductToOrder(int orderP, String productName, int quantity){
-
-    };
-
-    public void checkOrder(int orderP){
-        orders.get(orderP).calculateTotalPrice();
-        System.out.println(orders.get(orderP).toString());
-        for(int i = 0; i<orders.get(orderP).getItems().size()-1;i++){
-            System.out.println(orders.get(orderP).getItems().get(i).productData());
+    public void addProductToOrder(String name, String productName, int quantity){
+        Order order = null;
+        for(Order p: orders){
+            if(p.getName().equalsIgnoreCase(name)){
+                order = p;
+                break;
+            }
         }
-        return;
+
+        if(order == null){
+            System.out.println("The buyer does not have a open order");
+            return;
+        }
+        Product productFound = null;
+        for(Product product : inventory){
+            if(product.getName().equalsIgnoreCase(productName)){
+                productFound = product;
+                break;
+            }
+        }
+        if(productFound == null){
+            System.out.println("This Product is not available right now");
+            return;
+        }
+
+        order.addProduct(productFound);
+        System.out.println("Product added");
+
     };
 
+
+    public void removeProductToOrder(String name, String eliminatedProduct, int quantity) {
+        Order order = null;
+        for (Order p : orders) {
+            if (p.getName().equalsIgnoreCase(name)) {
+                order = p;
+                break;
+            }
+        }
+
+        if (order == null) {
+            System.out.println("The buyer does not have an open order.");
+            return;
+        }
+
+        List<OrderedItem> products = order.getItems();
+        Product productFound = null;
+        for (Product producto : inventory) {
+            if (producto.getName().equalsIgnoreCase(eliminatedProduct)) {
+                productFound = producto;
+                break;
+            }
+        }
+
+        if (productFound == null) {
+            System.out.println("The product is not present in the order.");
+            return;
+        }
+
+        if (productFound.getQuantity() >= quantity) {
+            productFound.setQuantity(productFound.getQuantity() - quantity);
+            System.out.println("Product removed from the order.");
+        } else {
+            System.out.println("The quantity to be removed is greater than the quantity available in the order.");
+        }
+    }
+        
+    public void checkOrder(String name) {
+        Order order = null;
+        for (Order p : orders) {
+            if (p.getName().equalsIgnoreCase(name)) {
+                order = p;
+                break;
+            }
+        }
+    
+        if (order == null) {
+            System.out.println("The buyer doesnt have a order open");
+            return;
+        }
+    
+        order.calculateTotalPrice();
+        System.out.println(order.toString());
+    
+        List<OrderedItem> products = order.getItems();
+        for (OrderedItem product : products) {
+            System.out.println(product.productData());
+        }
+    }
+
+    public void deleteOrder(String name) {
+        Order orderFound = null;
+        for (Order order : orders) {
+            if (order.getName().equalsIgnoreCase(name)) {
+                orderFound = order;
+                break;
+            }
+        }
+    
+        if (orderFound != null) {
+            orders.remove(orderFound);
+            System.out.println("Pedido eliminado correctamente.");
+        } else {
+            System.out.println("El pedido no existe.");
+        }
+    }
+    
+    
+    
+
+    
     public boolean stockCheck(int orderP){
         return false;
     };
@@ -100,6 +202,28 @@ public class Shop {
                 attName = "totalSales";
                 printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(attributeName)), ((Double)value2));
                 break;
+        }
+        return;
+    };
+
+    public <T> void binarySearchO(int nameBuyer, T value, T value2) throws NoSuchFieldException, IllegalAccessException {
+        int comp = 0;
+        int index;
+        String attName = "";
+        switch (nameBuyer){
+            case 1:
+                attName = "name";
+                printRangeName(binarySearchPS(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((String) value));
+                break;
+
+            //case 2:
+            //    attName = "price";
+            //    printRangePrice(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+            //    break;
+            //case 3:
+            //    attName = "totalSales";
+            //    printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+            //    break;
         }
         return;
     };
@@ -231,5 +355,8 @@ public class Shop {
             }
         }
     }
+
+
+
 
 }
