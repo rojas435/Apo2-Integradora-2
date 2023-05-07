@@ -17,10 +17,14 @@ class TestAplication {
     @Test
     void testAddProduct() {
         Shop shop = new Shop();
+        ArrayList<Product> list = new ArrayList<>();
+        list.add(new Product("Book 1", "A great book", 10.99, 5, 1, 0));
+        list.add(new Product("Phone", "An awesome phone", 999.99, 10, 2, 0));
+
         assertTrue(shop.addProduct("Book 1", "A great book", 10.99, 5, 1, 0));
-        assertEquals(1, shop.showInv().size());
+        assertEquals(list.get(0), shop.showInv());
         assertTrue(shop.addProduct("Phone", "An awesome phone", 999.99, 10, 2, 0));
-        assertEquals(2, shop.showInv(Void));
+        assertEquals(list.get(1), shop.showInv().get(1));
     }
     
     @Test
@@ -48,12 +52,9 @@ class TestAplication {
     @BeforeEach
     public void setup() {
         shop = new Shop();
-        p1 = new Product("product1", "description1", 10.0, 5, 1, 0.0);
-        p2 = new Product("product2", "description2", 20.0, 3, 2, 0.0);
-        p3 = new Product("product3", "description3", 30.0, 7, 3, 0.0);
-        shop.addProduct(p1);
-        shop.addProduct(p2);
-        shop.addProduct(p3);
+        shop.addProduct("product1", "description1", 10.0, 5, 1, 0);
+        shop.addProduct("product2", "description2", 20.0, 3, 2, 0);
+        shop.addProduct("product3", "description3", 30.0, 7, 3, 0);
     }
     
     @Test

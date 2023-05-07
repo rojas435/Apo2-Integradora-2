@@ -19,15 +19,17 @@ public class Shop {
         this.orders = new ArrayList<>();
     }
 
-    public void showInv(){
+    public ArrayList<Product> showInv(){
         int i = 0;
+        ArrayList<Product> list = new ArrayList<>();
         if(inventory!=null) {
             while (i < inventory.size()) {
+                list.add(inventory.get(i));
                 System.out.println(inventory.get(i).toString());
                 i++;
             }
         }
-        return;
+        return list;
     }
 
 
