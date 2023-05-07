@@ -1,13 +1,8 @@
 package model;
-import sun.util.resources.cldr.tg.CalendarData_tg_Cyrl_TJ;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import javax.smartcardio.ATR;
-
 
 public class Shop {
     private ArrayList<Product> inventory;
