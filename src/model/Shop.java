@@ -171,7 +171,7 @@ public class Shop {
         switch (nameBuyer){
             case 1:
                 attName = "name";
-                printRangeName(binarySearchPSO(attName, value,  inventory.get(0).comparatorForUse(nameBuyer)), ((String) value));
+                printRangeName(binarySearchPSO(attName, value,  orders.get(0).comparatorForUse(nameBuyer)), ((String) value));
                 break;
 
             //case 2:
