@@ -50,6 +50,7 @@ public class Main {
 				"4. Create Order\n"+
 				"5. Load Inventory\n"+
 				"6. Save Inventory\n"+
+				"7. Show Inventory\n"+
 				"0. Exit \n"+
 				"Opcion: ");  
 	}
@@ -58,19 +59,20 @@ public class Main {
 
 			switch(option){
 				case 1:
-					shop.showInv();
 					//addProduct();
 					addsetup();
+					shop.showInv();
 					break;
 				case 2:
-					shop.showInv();
 					eliminateProduct();
+					shop.showInv();
 					break;
 				case 3:
 					search();
 					break;
 				case 4:
-					createOrder();
+					//createOrder();
+					addsetup2();
 					break;
 				case 5:
 					loadInventory();
@@ -109,12 +111,39 @@ public class Main {
 	}
 
 	public void addsetup(){
-		shop.addProduct("Jojoa", "description", 20,1, 11,10);
-		shop.addProduct("Felipe", "description", 50,1, 5,20);
+		shop.addProduct("Jojoa", "description", 20,10, 11,10);
+		shop.addProduct("Felipe", "description", 50,5, 5,20);
 		shop.addProduct("Santiago", "las de industrial", 1,1, 6,1);
-		shop.addProduct("Joe", "description", 40,1, 11,16);
-		shop.addProduct("Checho", "description", 30,1, 5,28);
+		shop.addProduct("Joe", "description", 40,12, 11,16);
+		shop.addProduct("Checho", "description", 30,7, 5,28);
 		shop.addProduct("Santiago", "el negro", 100,1, 11,127);
+	};
+
+	public void addsetup2(){
+		int index = 0;
+		index = shop.createOrder("P1");
+		shop.addProductToOrder(index, "Jojoa", 2);
+		shop.addProductToOrder(index, "Felipe", 1);
+		shop.processOrder(index);
+
+		index = shop.createOrder("P2");
+		shop.addProductToOrder(index, "Joe", 4);
+		shop.addProductToOrder(index, "Checho", 2);
+		shop.processOrder(index);
+
+		index = shop.createOrder("P3");
+		shop.addProductToOrder(index, "Checho", 1);
+		shop.processOrder(index);
+
+		index = shop.createOrder("P4");
+		shop.addProductToOrder(index, "Jojoa", 1);
+		shop.addProductToOrder(index, "Santiago", 1);
+		shop.processOrder(index);
+
+		index = shop.createOrder("P5");
+		shop.addProductToOrder(index, "Felipe", 2);
+		shop.addProductToOrder(index, "Checho", 1);
+		shop.processOrder(index);
 	};
 
 
@@ -260,21 +289,22 @@ public class Main {
 	};
 
 	public void createOrder() {
+		reader.nextLine();
 		System.out.println("Whats your name:");
 		String name = reader.nextLine();
-		reader.nextLine();
-		int orderP = shop.createOrder(name);
-		int orderOpcion = 0;
-		do {
+		int index = shop.createOrder(name);
+		int leave = 0;
+		while (leave!=5){
 			System.out.println("\nRealizar pedido: \n"+
-			"1. Agregar producto al pedido\n"+
-			"2. Eliminar producto del pedido\n"+
-			"3. Ver pedido actual\n"+
-			"4. Realizar pedido\n"+
-			"5. Cancelar pedido\n"+
+			"1. Add product to order\n"+
+			"2. Remove producto from order\n"+
+			"3. Check current order\n"+
+			"4. Process order\n"+
+			"5. Cancel order\n"+
+			"6. Show inventory\n"+
 			"Option:");
 
-			orderOpcion = reader.nextInt();
+			int orderOpcion = reader.nextInt();
 			int quantity = 0;
 
 			switch (orderOpcion) {
@@ -284,7 +314,7 @@ public class Main {
 					String addedProduct = reader.nextLine();
 					System.out.println("Quantity of Product:");
 					quantity = reader.nextInt();
-					shop.addProductToOrder(name, addedProduct, quantity);
+					shop.addProductToOrder(index, addedProduct, quantity);
 					break;
 				case 2:
 					System.out.println("\nProduct Name:");
@@ -292,23 +322,29 @@ public class Main {
 					String eliminatedProduct = reader.nextLine();
 					System.out.println("Quantity of Product:");
 					quantity = reader.nextInt();
-					shop.removeProductToOrder(name, eliminatedProduct, quantity);
+					shop.removeProductToOrder(index, eliminatedProduct, quantity);
 					break;
 				case 3:
-					shop.checkOrder(name);
+					shop.checkOrder(index);
 					break;
 				case 4:
-					if (shop.stockCheck(orderP)==true) {
-						shop.processOrder(orderP);
-					}else{
+					boolean pass = shop.stockCheck(index);
+					if (pass==true) {
+						shop.processOrder(index);
+						shop.showInv();
+						leave = 5;
+					}else if (pass==false){
 						System.out.println("Theres more products in your order than in the inventory");
-						orderOpcion=0;
-					} ;
+					}
+					break;
 				case 5:
-					shop.deleteOrder(name);
+					shop.deleteOrder(index);
+					break;
+				case 6:
+					shop.showInv();
 					break;
 			}
-		} while (orderOpcion != 5 || orderOpcion != 4);
+		};
 		return;
 	}
 

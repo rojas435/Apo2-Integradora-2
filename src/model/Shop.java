@@ -61,14 +61,8 @@ public class Shop {
 
    
 
-    public void addProductToOrder(String name, String productName, int quantity){
-        Order order = null;
-        for(Order p: orders){
-            if(p.getName().equalsIgnoreCase(name)){
-                order = p;
-                break;
-            }
-        }
+    public void addProductToOrder(int index, String productName, int quantity){
+        Order order = orders.get(index);
 
         if(order == null){
             System.out.println("The buyer does not have a open order");
@@ -86,56 +80,24 @@ public class Shop {
             return;
         }
 
-        order.addProduct(productFound);
+        order.addProduct(productFound, quantity);
         System.out.println("Product added");
 
     };
 
 
-    public void removeProductToOrder(String name, String eliminatedProduct, int quantity) {
-        Order order = null;
-        for (Order p : orders) {
-            if (p.getName().equalsIgnoreCase(name)) {
-                order = p;
-                break;
-            }
-        }
+    public void removeProductToOrder(int index, String eliminatedProduct, int quantity) {
+        Order order = orders.get(index);
 
         if (order == null) {
             System.out.println("The buyer does not have an open order.");
             return;
         }
-
-        List<OrderedItem> products = order.getItems();
-        Product productFound = null;
-        for (Product producto : inventory) {
-            if (producto.getName().equalsIgnoreCase(eliminatedProduct)) {
-                productFound = producto;
-                break;
-            }
-        }
-
-        if (productFound == null) {
-            System.out.println("The product is not present in the order.");
-            return;
-        }
-
-        if (productFound.getQuantity() >= quantity) {
-            productFound.setQuantity(productFound.getQuantity() - quantity);
-            System.out.println("Product removed from the order.");
-        } else {
-            System.out.println("The quantity to be removed is greater than the quantity available in the order.");
-        }
+        order.eliminate(eliminatedProduct, quantity);
     }
         
-    public void checkOrder(String name) {
-        Order order = null;
-        for (Order p : orders) {
-            if (p.getName().equalsIgnoreCase(name)) {
-                order = p;
-                break;
-            }
-        }
+    public void checkOrder(int index) {
+        Order order = orders.get(index);
     
         if (order == null) {
             System.out.println("The buyer doesnt have a order open");
@@ -147,18 +109,12 @@ public class Shop {
     
         List<OrderedItem> products = order.getItems();
         for (OrderedItem product : products) {
-            System.out.println(product.productData());
+            System.out.println(product.productData().toString());
         }
     }
 
-    public void deleteOrder(String name) {
-        Order orderFound = null;
-        for (Order order : orders) {
-            if (order.getName().equalsIgnoreCase(name)) {
-                orderFound = order;
-                break;
-            }
-        }
+    public void deleteOrder(int index) {
+        Order orderFound = orders.get(index);
     
         if (orderFound != null) {
             orders.remove(orderFound);
@@ -173,10 +129,60 @@ public class Shop {
 
     
     public boolean stockCheck(int orderP){
-        return false;
+        Order order = orders.get(orderP);
+
+        List<OrderedItem> products = order.getItems();
+        for (OrderedItem product : products) {
+            for(int i = 0; i<inventory.size(); i++){
+                if(product.getProduct().getName().equals(inventory.get(i).getName())){
+                    if(inventory.get(i).getQuantity()<product.getQuantity()){
+                        return false;
+                    }
+                    break;
+                }
+            }
+        }
+        return true;
     };
 
     public void processOrder(int orderP){
+        Order order = orders.get(orderP);
+
+        List<OrderedItem> products = order.getItems();
+        for (OrderedItem product : products) {
+            for(int i = 0; i<inventory.size(); i++){
+                if(product.getProduct().getName().equals(inventory.get(i).getName())){
+                    if(inventory.get(i).getQuantity()-product.getQuantity()>0){
+                        inventory.get(i).setQuantity(inventory.get(i).getQuantity()-product.getQuantity());
+                    } else {
+                        inventory.remove(inventory.get(i));
+                    }
+                    break;
+                }
+            }
+        }
+        return;
+    };
+
+    public <T> void binarySearchO(int nameBuyer, T value, T value2) throws NoSuchFieldException, IllegalAccessException {
+        int comp = 0;
+        int index;
+        String attName = "";
+        switch (nameBuyer){
+            case 1:
+                attName = "name";
+                printRangeName(binarySearchPS(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((String) value));
+                break;
+
+            //case 2:
+            //    attName = "price";
+            //    printRangePrice(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+            //    break;
+            //case 3:
+            //    attName = "totalSales";
+            //    printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+            //    break;
+        }
         return;
     };
 
@@ -202,28 +208,6 @@ public class Shop {
                 attName = "totalSales";
                 printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(attributeName)), ((Double)value2));
                 break;
-        }
-        return;
-    };
-
-    public <T> void binarySearchO(int nameBuyer, T value, T value2) throws NoSuchFieldException, IllegalAccessException {
-        int comp = 0;
-        int index;
-        String attName = "";
-        switch (nameBuyer){
-            case 1:
-                attName = "name";
-                printRangeName(binarySearchPS(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((String) value));
-                break;
-
-            //case 2:
-            //    attName = "price";
-            //    printRangePrice(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
-            //    break;
-            //case 3:
-            //    attName = "totalSales";
-            //    printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
-            //    break;
         }
         return;
     };

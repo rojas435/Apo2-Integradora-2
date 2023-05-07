@@ -30,20 +30,6 @@ public class Order {
         return items;
     }
 
-
-    public void addProduct(Product productFound) {
-        items.add(new OrderedItem(productFound, 0));
-    }
-
-    public void eliminate(OrderedItem product) {
-        items.remove(product);
-    }
-
-    public void cancelOrder(){
-        items.clear();
-        System.out.println("Pedido eliminado con exito");
-    }
-
     public void setItems(ArrayList<OrderedItem> items) {
         this.items = items;
     }
@@ -87,6 +73,36 @@ public class Order {
         }
         return null;
     };
+
+    public void addProduct(Product productFound, int quantity) {
+        items.add(new OrderedItem(productFound, quantity));
+    }
+
+    public void eliminate(String product, int quantity) {
+        OrderedItem remP = null;
+        for(int i = 0; i< items.size(); i++){
+            if(items.get(i).getProduct().getName().equals(product)){
+                remP = items.get(i);
+                break;
+            }
+        }
+        if(remP!=null){
+            if(remP.getQuantity()>quantity){
+                remP.setQuantity(remP.getQuantity()-quantity);
+            } else if (remP.getQuantity()==quantity){
+                items.remove(remP);
+            } else {
+                System.out.println("You are removing more than you have");
+            }
+            return;
+        }
+        return;
+    }
+
+    public void cancelOrder(){
+        items.clear();
+        System.out.println("Pedido eliminado con exito");
+    }
 
     @Override
     public String toString() {
