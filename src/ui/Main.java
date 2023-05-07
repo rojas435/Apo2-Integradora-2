@@ -268,7 +268,9 @@ public class Main {
 				System.out.println("Tell me the name of the buyer: ");
 				reader.nextLine();
 				String nameBuyer = reader.nextLine();
-				shop.binarySearchO(option2,nameBuyer,null );
+				System.out.println("In (1) ascending or (2) descending order:");
+				int order = reader.nextInt();
+				shop.binarySearchO(option2,nameBuyer,null, order);
 				break;
 
 				case 2:
@@ -277,7 +279,9 @@ public class Main {
 				double valueMinP = reader.nextInt();
 				System.out.println("Max Price");
 				double valueMaxP = reader.nextInt();
-				shop.binarySearchO(option2, valueMinP, valueMaxP);
+				System.out.println("In (1) ascending or (2) descending order:");
+				order = reader.nextInt();
+				shop.binarySearchO(option2, valueMinP, valueMaxP, order);
 				break;
 
 				case 3:
@@ -286,7 +290,9 @@ public class Main {
 				int month = reader.nextInt();
 				int year = reader.nextInt();
 				LocalDate date = LocalDate.of(year,month,day);
-				shop.binarySearchO(option2, date, null);
+				System.out.println("In (1) ascending or (2) descending order:");
+				order = reader.nextInt();
+				shop.binarySearchO(option2, date, null, order);
 				break;
 
 			}

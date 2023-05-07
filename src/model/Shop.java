@@ -165,24 +165,24 @@ public class Shop {
         return;
     };
 
-    public <T> void binarySearchO(int nameBuyer, T value, T value2) throws NoSuchFieldException, IllegalAccessException {
+    public <T> void binarySearchO(int nameBuyer, T value, T value2, int order) throws NoSuchFieldException, IllegalAccessException {
         int comp = 0;
         int index;
         String attName = "";
         switch (nameBuyer){
             case 1:
                 attName = "name";
-                printOrder(binarySearchOS(attName, value,  orders.get(0).comparatorForUse(nameBuyer)), ((String) value));
+                printOrder(binarySearchOS(attName, value,  orders.get(0).comparatorForUse(nameBuyer)), ((String) value), order);
                 break;
 
             case 2:
                 attName = "totalPrice";
-                printTotalPrice(binarySearchOMin(attName, value, orders.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+                printTotalPrice(binarySearchOMin(attName, value, orders.get(0).comparatorForUse(nameBuyer)), ((Double)value2), order);
                 break;
 
             case 3:
                 attName = "date";
-                binarySearchODate(attName, value, orders.get(0).comparatorForUse(nameBuyer));
+                printDate(binarySearchODate(attName, value, orders.get(0).comparatorForUse(nameBuyer)),((LocalDate)value),order);
                 break;
         }
         return;
@@ -307,22 +307,35 @@ public class Shop {
         return minIndex;
     };
 
-    public void printTotalPrice(int index, double max){
+    public void printTotalPrice(int index, double max, int order){
         if(index == -1){
             return;
         }
         int minIndex=index;
+        ArrayList<Order> list = new ArrayList();
         for(int i = minIndex; i<orders.size(); i++){
             if(orders.get(i).getTotalPrice()<=max){
-                System.out.println(orders.get(i).toString());
+                if(order == 1) {
+                    list.add(orders.get(i));
+                } else {
+                    System.out.println(orders.get(i).toString());
+                }
             } else {
                 break;
             }
         }
+        if(order == 1){
+            int i = list.size();
+            while(i>-1){
+                System.out.println(list.get(i).toString());
+                i--;
+            }
+        }
     }
 
-    public void printOrder(int index, String name){
+    public void printOrder(int index, String name, int order){
         int minIndex=index;
+        ArrayList<Order> list = new ArrayList();
         for(int i = index-1; i>0; i--){
             if(orders.get(i).getName().equals(name)){
                 minIndex = i;
@@ -333,24 +346,46 @@ public class Shop {
 
         for(int i = minIndex; i<orders.size(); i++){
             if(orders.get(i).getName().equals(name)){
-                System.out.println(orders.get(i).toString());
+                if(order == 1) {
+                    list.add(orders.get(i));
+                } else {
+                    System.out.println(orders.get(i).toString());
+                }
             } else {
-                System.out.println(orders.get(i).toString());
                 break;
+            }
+        }
+        if(order == 1){
+            int i = list.size();
+            while(i>-1){
+                System.out.println(list.get(i).toString());
+                i--;
             }
         }
     };
 
-    public void printDate(int index, LocalDate date){
+    public void printDate(int index, LocalDate date, int order){
         if(index == -1){
             return;
         }
         int minIndex=index;
+        ArrayList<Order> list = new ArrayList();
         for(int i = minIndex; i<orders.size(); i++){
             if(orders.get(i).getDate()!=date){
                 break;
             } else {
-                System.out.println(orders.get(i).toString());
+                if(order == 1) {
+                    list.add(orders.get(i));
+                } else {
+                    System.out.println(orders.get(i).toString());
+                }
+            }
+        }
+        if(order == 1){
+            int i = list.size();
+            while(i>-1){
+                System.out.println(list.get(i).toString());
+                i--;
             }
         }
     }
