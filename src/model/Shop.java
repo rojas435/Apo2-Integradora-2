@@ -1,6 +1,7 @@
 package model;
 import java.lang.reflect.Field;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -171,53 +172,75 @@ public class Shop {
         switch (nameBuyer){
             case 1:
                 attName = "name";
-                printOrder(binarySearchPSO(attName, value,  orders.get(0).comparatorForUse(nameBuyer)), ((String) value));
+                printOrder(binarySearchOS(attName, value,  orders.get(0).comparatorForUse(nameBuyer)), ((String) value));
                 break;
 
             case 2:
                 attName = "totalPrice";
-                printTotalPrice(binarySearchPMinO(attName, value, orders.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+                printTotalPrice(binarySearchOMin(attName, value, orders.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
                 break;
 
             case 3:
-                attName = "totalSales";
-                printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+                attName = "date";
+                binarySearchODate(attName, value, orders.get(0).comparatorForUse(nameBuyer));
                 break;
         }
         return;
     };
 
-    public int searchOrdersByDate(java.util.Date dateMin, java.util.Date dateMax) {
-        int inicio = 0;
-        int fin = orders.size() - 1;
+    public <T> int binarySearchODate(String attributeName, T value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
+        int initialIndex = 0;
+        int finalIndex = orders.size();
+        Collections.sort(orders,comparator);
+        int minIndex=-1;
 
-        while (inicio <= fin) {
-            int medio = inicio + (fin - inicio) / 2;
-            java.util.Date fechaPedido = orders.get(medio).getDate();
+        while (initialIndex <= finalIndex) {
+            int middleIndex = (initialIndex + finalIndex) / 2;
 
-            if (fechaPedido.equals(dateMin) || fechaPedido.equals(dateMax)) {
-                return medio; // Pedido encontrado en los extremos del rango
+            Order middleObject = (Order) orders.get(middleIndex);
+
+            Field field = middleObject.getClass().getDeclaredField(attributeName);
+            field.setAccessible(true);
+
+            Object middleValue = field.get(middleObject);
+
+            int comparison;
+            if (middleValue instanceof LocalDate && value instanceof LocalDate) {
+                LocalDate middleDate = (LocalDate) middleValue;
+                LocalDate searchDate = (LocalDate) value;
+
+                int middleYear = middleDate.getYear();
+                int searchYear = searchDate.getYear();
+                if (middleYear == searchYear) {
+                    int middleMonth = middleDate.getMonthValue();
+                    int searchMonth = searchDate.getMonthValue();
+                    if (middleMonth == searchMonth) {
+                        int middleDay = middleDate.getDayOfMonth();
+                        int searchDay = searchDate.getDayOfMonth();
+                        comparison = Integer.compare(middleDay, searchDay);
+                    } else {
+                        comparison = Integer.compare(middleMonth, searchMonth);
+                    }
+                } else {
+                    comparison = Integer.compare(middleYear, searchYear);
+                }
+            }else {
+                throw new IllegalArgumentException("Cannot compare " + middleValue.getClass().getSimpleName() + " with " + value.getClass().getSimpleName());
             }
-
-            if (fechaPedido.after(dateMin) && fechaPedido.before(dateMax)) {
-                return medio; // Pedido encontrado dentro del rango
-            }
-
-            if (fechaPedido.compareTo(dateMax) > 0) {
-                fin = medio - 1; // Buscar en la mitad izquierda
+            if (comparison >= 0) {
+                minIndex = middleIndex;
+                finalIndex = middleIndex - 1;
             } else {
-                inicio = medio + 1; // Buscar en la mitad derecha
+                initialIndex = middleIndex + 1;
             }
         }
 
-        return -1; // Pedido no encontrado
+        return minIndex;
     }
 
 
 
-
-
-    public <T> int binarySearchPSO(String attributeName, T value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
+    public <T> int binarySearchOS(String attributeName, T value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
         int initialIndex = 0;
         int finalIndex = orders.size();
         Collections.sort(orders,comparator);
@@ -253,7 +276,7 @@ public class Shop {
     }
 
     
-    public <T> int binarySearchPMinO(String attributeName, T value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
+    public <T> int binarySearchOMin(String attributeName, T value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
         int initialIndex = 0;
         int finalIndex = orders.size()-1;
         Collections.sort(orders,comparator);
@@ -285,7 +308,6 @@ public class Shop {
     };
 
     public void printTotalPrice(int index, double max){
-        System.out.println(index);
         if(index == -1){
             return;
         }
@@ -319,30 +341,42 @@ public class Shop {
         }
     };
 
+    public void printDate(int index, LocalDate date){
+        if(index == -1){
+            return;
+        }
+        int minIndex=index;
+        for(int i = minIndex; i<orders.size(); i++){
+            if(orders.get(i).getDate()!=date){
+                break;
+            } else {
+                System.out.println(orders.get(i).toString());
+            }
+        }
+    }
 
 
-
-    public <T> void binarySearchP(int attributeName, T value, T value2) throws NoSuchFieldException, IllegalAccessException {
+    public <T> void binarySearchP(int attributeName, T value, T value2, int order) throws NoSuchFieldException, IllegalAccessException {
         int comp = 0;
         int index;
         String attName = "";
         switch (attributeName){
             case 1:
                 attName = "name";
-                printRangeName(binarySearchPS(attName, value, inventory.get(0).comparatorForUse(attributeName)), ((String) value));
+                printRangeName(binarySearchPS(attName, value, inventory.get(0).comparatorForUse(attributeName)), ((String) value), order);
                 break;
             case 2:
                 attName = "price";
-                printRangePrice(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(attributeName)), ((Double)value2));
+                printRangePrice(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(attributeName)), ((Double)value2), order);
                 break;
             case 3:
                  attName = "categories";
 
-                 printRangeCategory(binarySearchPS(attName, Categories.fromInt(((Integer)value)), inventory.get(0).comparatorForUse(attributeName)), Categories.fromInt(((Integer)value)));
+                 printRangeCategory(binarySearchPS(attName, Categories.fromInt(((Integer)value)), inventory.get(0).comparatorForUse(attributeName)), Categories.fromInt(((Integer)value)), order);
                 break;
             case 4:
                 attName = "totalSales";
-                printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(attributeName)), ((Double)value2));
+                printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(attributeName)), ((Double)value2), order);
                 break;
         }
         return;
@@ -414,8 +448,9 @@ public class Shop {
         return minIndex;
     };
 
-    public void printRangeCategory(int index, Categories category){
+    public void printRangeCategory(int index, Categories category, int order){
         int minIndex=index;
+        ArrayList<Product> list = new ArrayList();
         for(int i = index-1; i>0; i--){
             if(inventory.get(i).getCategories()!=category){
                 break;
@@ -427,13 +462,25 @@ public class Shop {
             if(inventory.get(i).getCategories()!=category){
                 break;
             } else {
-                System.out.println(inventory.get(i).toString());
+                if(order == 1) {
+                    list.add(inventory.get(i));
+                } else {
+                    System.out.println(inventory.get(i).toString());
+                }
+            }
+        }
+        if(order == 1){
+            int i = list.size();
+            while(i>-1){
+                System.out.println(list.get(i).toString());
+                i--;
             }
         }
     };
 
-    public void printRangeName(int index, String name){
+    public void printRangeName(int index, String name, int order){
         int minIndex=index;
+        ArrayList<Product> list = new ArrayList();
         for(int i = index-1; i>0; i--){
             if(inventory.get(i).getName().equals(name)){
                 minIndex = i;
@@ -445,37 +492,71 @@ public class Shop {
 
         for(int i = minIndex; i<inventory.size(); i++){
             if(inventory.get(i).getName().equals(name)){
-                System.out.println(inventory.get(i).toString());
+                if(order == 1) {
+                    list.add(inventory.get(i));
+                } else {
+                    System.out.println(inventory.get(i).toString());
+                }
             } else {
-                System.out.println(inventory.get(i).toString());
                 break;
+            }
+        }
+        if(order == 1){
+            int i = list.size();
+            while(i>-1){
+                System.out.println(list.get(i).toString());
+                i--;
             }
         }
     };
 
-    public void printRangePrice(int index, double max){
+    public void printRangePrice(int index, double max, int order){
         if(index == -1){
             return;
         }
         int minIndex=index;
+        ArrayList<Product> list = new ArrayList();
         for(int i = minIndex; i<inventory.size(); i++){
             if(inventory.get(i).getPrice()<=max){
-                System.out.println(inventory.get(i).toString());
+                if(order == 1) {
+                    list.add(inventory.get(i));
+                } else {
+                    System.out.println(inventory.get(i).toString());
+                }
             } else {
                 break;
             }
         }
+        if(order == 1){
+            int i = list.size();
+            while(i>-1){
+                System.out.println(list.get(i).toString());
+                i--;
+            }
+        }
     }
-    public void printRangeSales(int index, double max){
+    public void printRangeSales(int index, double max, int order){
         if(index == -1){
             return;
         }
         int minIndex=index;
+        ArrayList<Product> list = new ArrayList();
         for(int i = minIndex; i<inventory.size(); i++){
             if(inventory.get(i).getTotalSales()<=max){
-                System.out.println(inventory.get(i).toString());
+                if(order == 1) {
+                    list.add(inventory.get(i));
+                } else {
+                    System.out.println(inventory.get(i).toString());
+                }
             } else {
                 break;
+            }
+        }
+        if(order == 1){
+            int i = list.size();
+            while(i>-1){
+                System.out.println(list.get(i).toString());
+                i--;
             }
         }
     }

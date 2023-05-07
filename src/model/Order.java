@@ -1,5 +1,10 @@
 package model;
 
+import com.sun.org.apache.bcel.internal.generic.LoadClass;
+import sun.util.resources.LocaleData;
+
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -9,13 +14,14 @@ public class Order {
     private String name;
     private ArrayList<OrderedItem> items;
     private double totalPrice;
-    private Date date;
+    private LocalDate date;
 
     public Order(String name) {
         this.name = name;
         this.items = new ArrayList<OrderedItem>();
         this.totalPrice = 0;
-        this.date = new Date();
+        this.date = LocalDate.now();
+        System.out.println(date.toString());
     }
 
     public String getName() {
@@ -42,11 +48,11 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

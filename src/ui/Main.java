@@ -1,6 +1,7 @@
 package ui;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.*;
@@ -215,7 +216,9 @@ public class Main {
 					reader.nextLine();
 					System.out.println("product name");
 					String valueN = reader.nextLine();
-					shop.binarySearchP(type, valueN, null);
+					System.out.println("In (1) ascending or (2) descending order:");
+					int order = reader.nextInt();
+					shop.binarySearchP(type, valueN, null, order);
 					break;
 				case 2:
 					reader.nextLine();
@@ -223,13 +226,17 @@ public class Main {
 					double valueMinP = reader.nextInt();
 					System.out.println("Max Price");
 					double valueMaxP = reader.nextInt();
-					shop.binarySearchP(type, valueMinP, valueMaxP);
+					System.out.println("In (1) ascending or (2) descending order:");
+					order = reader.nextInt();
+					shop.binarySearchP(type, valueMinP, valueMaxP, order);
 					break;
 				case 3:
 					reader.nextLine();
 					System.out.println("What category");
 					int valueC = reader.nextInt();
-					shop.binarySearchP(type, valueC, null);
+					System.out.println("In (1) ascending or (2) descending order:");
+					order = reader.nextInt();
+					shop.binarySearchP(type, valueC, null, order);
 					break;
 				case 4:
 					reader.nextLine();
@@ -237,7 +244,9 @@ public class Main {
 					double valueMinS = reader.nextInt();
 					System.out.println("Max Sales");
 					double valueMaxS = reader.nextInt();
-					shop.binarySearchP(type, valueMinS, valueMaxS);
+					System.out.println("In (1) ascending or (2) descending order:");
+					order = reader.nextInt();
+					shop.binarySearchP(type, valueMinS, valueMaxS, order);
 					break;
 				case 5:
 					break;
@@ -272,9 +281,12 @@ public class Main {
 				break;
 
 				case 3:
-				System.out.println("Tell me date of the purchase: ");
-				Date date = new Date(type);
-				shop.searchOrdersByDate();
+				System.out.println("Tell me date of the purchase:");
+				int day = reader.nextInt();
+				int month = reader.nextInt();
+				int year = reader.nextInt();
+				LocalDate date = LocalDate.of(year,month,day);
+				shop.binarySearchO(option2, date, null);
 				break;
 
 			}
