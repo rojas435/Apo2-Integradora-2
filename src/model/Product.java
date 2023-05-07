@@ -8,57 +8,57 @@ public class Product {
     private String name;
     private String description;
 
-    private Categories typeOfProduct;
+    private Categories categories;
     private double price;
     private int quantity;
-    private int totalSales;
+    private double totalSales;
 
     //Constructor
-    public Product(String name, String desription, double price, int quantity, int typeOfProduct, int totalSales){
+    public Product(String name, String desription, double price, int quantity, int categories, double totalSales){
         this.name = name;
         this.description = desription;
         this.price = price;
         this.quantity = quantity;
         this.totalSales = totalSales;
-        switch (typeOfProduct){
+        switch (categories){
             case 1:
-                this.typeOfProduct = Categories.BOOKS;
+                this.categories = Categories.BOOKS;
                 break;
             case 2:
-                this.typeOfProduct = Categories.ELECTRONICS;
+                this.categories = Categories.ELECTRONICS;
                 break;
             case 3:
-                this.typeOfProduct = Categories.CLOTHES;
+                this.categories = Categories.CLOTHES;
                 break;
             case 4:
-                this.typeOfProduct = Categories.ACCESORIES;
+                this.categories = Categories.ACCESORIES;
                 break;
             case 5:
-                this.typeOfProduct = Categories.FOOD;
+                this.categories = Categories.FOOD;
                 break;
             case 6:
-                this.typeOfProduct = Categories.DRINKS;
+                this.categories = Categories.DRINKS;
                 break;
             case 7:
-                this.typeOfProduct = Categories.STATIONERY;
+                this.categories = Categories.STATIONERY;
                 break;
             case 8:
-                this.typeOfProduct = Categories.SPORTS;
+                this.categories = Categories.SPORTS;
                 break;
             case 9:
-                this.typeOfProduct = Categories.BEAUTY;
+                this.categories = Categories.BEAUTY;
                 break;
             case 10:
-                this.typeOfProduct = Categories.PERSONAL;
+                this.categories = Categories.PERSONAL;
                 break;
             case 11:
-                this.typeOfProduct = Categories.TOYS;
+                this.categories = Categories.TOYS;
                 break;
             case 12:
-                this.typeOfProduct = Categories.GAMES;
+                this.categories = Categories.GAMES;
                 break;
             case 13:
-                this.typeOfProduct = Categories.KIDS;
+                this.categories = Categories.KIDS;
                 break;
 
         };
@@ -96,20 +96,20 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public int getTotalSales() {
+    public double getTotalSales() {
         return totalSales;
     }
 
-    public void setTotalSales(int totalSales) {
+    public void setTotalSales(double totalSales) {
         this.totalSales = totalSales;
     }
 
-    public Categories getTypeOfProduct() {
-        return typeOfProduct;
+    public Categories getCategories() {
+        return categories;
     }
 
-    public void setTypeOfProduct(Categories typeOfProduct) {
-        this.typeOfProduct = typeOfProduct;
+    public void setCategories(Categories categories) {
+        this.categories = categories;
     }
     public Comparator<Product> comparatorForUse(int chosenComparator){
         switch (chosenComparator){
@@ -120,7 +120,7 @@ public class Product {
                 Comparator<Product> priceComparator = Comparator.comparing(product -> product.getPrice());
                 return priceComparator;
             case 3:
-                Comparator<Product> categoryComparator = Comparator.comparing(product -> product.getTypeOfProduct());
+                Comparator<Product> categoryComparator = Comparator.comparing(product -> product.getCategories().ordinal());
                 return categoryComparator;
             case 4:
                 Comparator<Product> numSalesComparator = Comparator.comparing(product -> product.getTotalSales());
@@ -134,7 +134,7 @@ public class Product {
         return "Product{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", typeOfProduct=" + typeOfProduct +
+                ", categories=" + categories +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 ", totalSales=" + totalSales +

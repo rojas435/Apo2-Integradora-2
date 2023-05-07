@@ -15,11 +15,12 @@ public class Main {
 	
 
 	public Main() {
-		reader = new Scanner(System.in); 
-        Shop shop = new Shop();
+		reader = new Scanner(System.in);
+		this.shop = new Shop();
+
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
 			Main main = new Main();
 
 			int option = -1; 
@@ -53,12 +54,13 @@ public class Main {
 				"Opcion: ");  
 	}
 
-		public void executeOption(int option){
+		public void executeOption(int option) throws NoSuchFieldException, IllegalAccessException {
 
 			switch(option){
 				case 1:
 					shop.showInv();
-					addProduct();
+					//addProduct();
+					addsetup();
 					break;
 				case 2:
 					shop.showInv();
@@ -103,6 +105,15 @@ public class Main {
 		return option; 
 	}
 
+	public void addsetup(){
+		shop.addProduct("Jojoa", "description", 20,1, 11,10);
+		shop.addProduct("Felipe", "description", 50,1, 5,20);
+		shop.addProduct("Santiago", "las de industrial", 1,1, 6,1);
+		shop.addProduct("Joe", "description", 40,1, 11,16);
+		shop.addProduct("Checho", "description", 30,1, 5,28);
+		shop.addProduct("Santiago", "el negro", 100,1, 11,127);
+	};
+
 	public void addProduct(){
 		reader.nextLine();
 		System.out.println("Ingresame el nombre del producto: ");
@@ -119,17 +130,19 @@ public class Main {
 		int quantity = reader.nextInt();
 
 		System.out.print("Dime el tipo de producto que es"+
-		"\n1. Libro"+
-		"\n2. Electronico"+
-		"\n3. Ropa"+
-		"\n4. Accesorios"+
-		"\n5. Alimentos"+
-		"\n6. Bebidas"+
-		"\n7. Papeleria"+
-		"\n8. Deportes"+
-		"\n9. Productos de belleza"+
-		"\n10. Cuidado personal"+
-		"\n11. Juguetes y juegos \n"+
+		"\n1. BOOKS"+
+		"\n2. ELECTRONICS"+
+		"\n3. CLOTHES"+
+		"\n4. ACCESORIES"+
+		"\n5. FOOD"+
+		"\n6. DRINKS"+
+		"\n7. STATIONERY"+
+		"\n8. SPORTS"+
+		"\n9. BEAUTY"+
+		"\n10. PERSONAL"+
+		"\n11. TOYS "+
+		"\n12. GAMES"+
+		"\n13. KIDS\n"+
 		"Opcion:");
 
 		int typeOfProduct = reader.nextInt();
@@ -146,7 +159,7 @@ public class Main {
 
 
 
-	public void search(){
+	public void search() throws NoSuchFieldException, IllegalAccessException {
 		System.out.println("Tell me what you want to search"+
 		"\n1. Search Product"+
 		"2. Search Order\n"+
@@ -155,24 +168,48 @@ public class Main {
 
 		switch(option){
 			case 1:
-			System.out.print("Dime por que caracteristica deseas buscar el producto "+
+			System.out.print("What characteristic to you wanna search for: "+
 			"\n1. Name"+
 			"\n2. Price"+
-			"\n3. Categorie"+
+			"\n3. Category"+
 			"\n4. Number of times of buying"+
 			"5. Return to option\n"+
 			"Option:");
 			int type = reader.nextInt();
 			switch(type){
 				case 1:
-				reader.nextLine();
-				System.out.println("Dime el nombre del producto");
-				String name = reader.nextLine();
-				
-				break;
-
+					reader.nextLine();
+					System.out.println("product name");
+					String valueN = reader.nextLine();
+					shop.binarySearchP(type, valueN, null);
+					break;
+				case 2:
+					reader.nextLine();
+					System.out.println("Min Price");
+					double valueMinP = reader.nextInt();
+					System.out.println("Max Price");
+					double valueMaxP = reader.nextInt();
+					shop.binarySearchP(type, valueMinP, valueMaxP);
+					break;
+				case 3:
+					reader.nextLine();
+					System.out.println("What category");
+					int valueC = reader.nextInt();
+					shop.binarySearchP(type, valueC, null);
+					break;
+				case 4:
+					reader.nextLine();
+					System.out.println("Min Sales");
+					double valueMinS = reader.nextInt();
+					System.out.println("Max Sales");
+					double valueMaxS = reader.nextInt();
+					shop.binarySearchP(type, valueMinS, valueMaxS);
+					break;
+				case 5:
+					break;
 
 			}
+			break;
 
 			case 2:
 			System.out.println("Tell me for what characteristics you want to search: "+
@@ -205,6 +242,7 @@ public class Main {
 
 			break;
 		}
+		return;
 		
 	}
 
