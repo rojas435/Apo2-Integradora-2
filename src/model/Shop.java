@@ -1,5 +1,6 @@
 package model;
 import java.lang.reflect.Field;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -130,7 +131,6 @@ public class Shop {
     
     public boolean stockCheck(int orderP){
         Order order = orders.get(orderP);
-
         List<OrderedItem> products = order.getItems();
         for (OrderedItem product : products) {
             for(int i = 0; i<inventory.size(); i++){
@@ -147,7 +147,6 @@ public class Shop {
 
     public void processOrder(int orderP){
         Order order = orders.get(orderP);
-
         List<OrderedItem> products = order.getItems();
         for (OrderedItem product : products) {
             for(int i = 0; i<inventory.size(); i++){
@@ -161,6 +160,7 @@ public class Shop {
                 }
             }
         }
+        order.calculateTotalPrice();
         return;
     };
 
@@ -171,20 +171,50 @@ public class Shop {
         switch (nameBuyer){
             case 1:
                 attName = "name";
-                printRangeName(binarySearchPSO(attName, value,  orders.get(0).comparatorForUse(nameBuyer)), ((String) value));
+                printOrder(binarySearchPSO(attName, value,  orders.get(0).comparatorForUse(nameBuyer)), ((String) value));
                 break;
 
-            //case 2:
-            //    attName = "price";
-            //    printRangePrice(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
-            //    break;
-            //case 3:
-            //    attName = "totalSales";
-            //    printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
-            //    break;
+            case 2:
+                attName = "totalPrice";
+                printTotalPrice(binarySearchPMinO(attName, value, orders.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+                break;
+
+            case 3:
+                attName = "totalSales";
+                printRangeSales(binarySearchPMin(attName, value, inventory.get(0).comparatorForUse(nameBuyer)), ((Double)value2));
+                break;
         }
         return;
     };
+
+    public int buscarPedidoPorFecha(ArrayList<Order> orders, Date fechaMinima, Date fechaMaxima) {
+        int inicio = 0;
+        int fin = orders.size() - 1;
+
+        while (inicio <= fin) {
+            int medio = inicio + (fin - inicio) / 2;
+            java.util.Date fechaPedido = orders.get(medio).getDate();
+
+            if (fechaPedido.equals(fechaMinima) || fechaPedido.equals(fechaMaxima)) {
+                return medio; // Pedido encontrado en los extremos del rango
+            }
+
+            if (fechaPedido.after(fechaMinima) && fechaPedido.before(fechaMaxima)) {
+                return medio; // Pedido encontrado dentro del rango
+            }
+
+            if (fechaPedido.compareTo(fechaMaxima) > 0) {
+                fin = medio - 1; // Buscar en la mitad izquierda
+            } else {
+                inicio = medio + 1; // Buscar en la mitad derecha
+            }
+        }
+
+        return -1; // Pedido no encontrado
+    }
+
+
+
 
 
     public <T> int binarySearchPSO(String attributeName, T value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
@@ -221,6 +251,75 @@ public class Shop {
 
         return -1;
     }
+
+    
+    public <T> int binarySearchPMinO(String attributeName, T value, Comparator<Order> comparator) throws NoSuchFieldException, IllegalAccessException {
+        int initialIndex = 0;
+        int finalIndex = orders.size()-1;
+        Collections.sort(orders,comparator);
+        int minIndex=-1;
+        while (initialIndex <= finalIndex) {
+            int middleIndex = (initialIndex + finalIndex) / 2;
+
+            Order middleObject = (Order) orders.get(middleIndex);
+
+            Field field = middleObject.getClass().getDeclaredField(attributeName);
+            field.setAccessible(true);
+
+            Object middleValue = field.get(middleObject);
+
+            int comparison;
+            if (middleValue instanceof Double && value instanceof Double) {
+                comparison = Double.compare((Double) middleValue, (Double) value);
+            }else {
+                throw new IllegalArgumentException("Cannot compare " + middleValue.getClass().getSimpleName() + " with " + value.getClass().getSimpleName());
+            }
+            if (comparison >= 0) {
+                minIndex = middleIndex;
+                finalIndex = middleIndex - 1;
+            } else {
+                initialIndex = middleIndex + 1;
+            }
+        }
+        return minIndex;
+    };
+
+    public void printTotalPrice(int index, double max){
+        System.out.println(index);
+        if(index == -1){
+            return;
+        }
+        int minIndex=index;
+        for(int i = minIndex; i<orders.size(); i++){
+            if(orders.get(i).getTotalPrice()<=max){
+                System.out.println(orders.get(i).toString());
+            } else {
+                break;
+            }
+        }
+    }
+
+    public void printOrder(int index, String name){
+        int minIndex=index;
+        for(int i = index-1; i>0; i--){
+            if(orders.get(i).getName().equals(name)){
+                minIndex = i;
+            } else {
+                break;
+            }
+        }
+
+        for(int i = minIndex; i<orders.size(); i++){
+            if(orders.get(i).getName().equals(name)){
+                System.out.println(orders.get(i).toString());
+            } else {
+                System.out.println(orders.get(i).toString());
+                break;
+            }
+        }
+    };
+
+
 
 
     public <T> void binarySearchP(int attributeName, T value, T value2) throws NoSuchFieldException, IllegalAccessException {
@@ -314,6 +413,7 @@ public class Shop {
         }
         return minIndex;
     };
+
     public void printRangeCategory(int index, Categories category){
         int minIndex=index;
         for(int i = index-1; i>0; i--){
@@ -331,6 +431,7 @@ public class Shop {
             }
         }
     };
+
     public void printRangeName(int index, String name){
         int minIndex=index;
         for(int i = index-1; i>0; i--){
@@ -340,6 +441,8 @@ public class Shop {
                 break;
             }
         }
+
+
         for(int i = minIndex; i<inventory.size(); i++){
             if(inventory.get(i).getName().equals(name)){
                 System.out.println(inventory.get(i).toString());
@@ -376,8 +479,4 @@ public class Shop {
             }
         }
     }
-
-
-
-
 }

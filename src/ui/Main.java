@@ -263,8 +263,11 @@ public class Main {
 
 				case 2:
 				reader.nextLine();
-				System.out.println("");
-				System.out.println();
+				System.out.println("Min Price");
+				double valueMinP = reader.nextInt();
+				System.out.println("Max Price");
+				double valueMaxP = reader.nextInt();
+				shop.binarySearchO(option2, valueMinP, valueMaxP);
 				break;
 
 				case 3:
