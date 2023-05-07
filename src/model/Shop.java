@@ -3,6 +3,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import javax.smartcardio.ATR;
+
 
 public class Shop {
     private ArrayList<Product> inventory;
@@ -75,23 +77,23 @@ public class Shop {
         return;
     };
 
-    public <T> void binarySearchP(String attributeName, T value) throws NoSuchFieldException, IllegalAccessException {
+    public <T> void binarySearchP(int attributeName, T value) throws NoSuchFieldException, IllegalAccessException {
         int comp = 0;
         switch (attributeName){
-            case "name":
-                comp =1;
+            case 1:
+                String attName = "name";               
                 break;
-            case "price":
-                comp = 2;
+            case 2:
+                 attName = "price";
                 break;
-            case "category":
-                comp = 3;
+            case 3:
+                 attName = "category";
                 break;
-            case "totalSales":
-                comp = 4;
+            case 4:
+                 attName = "totalSales";
                 break;
         }
-        binarySearchP(attributeName, value, inventory.get(0).comparatorForUse(comp));
+        binarySearchP(attName, value, inventory.get(0).comparatorForUse(attributeName));
         return;
     };
 
