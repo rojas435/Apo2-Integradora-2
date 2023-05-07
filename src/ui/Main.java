@@ -1,5 +1,6 @@
 package ui;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.*;
@@ -271,9 +272,9 @@ public class Main {
 				break;
 
 				case 3:
-				System.out.println("Tell me date of the purchase");
-				String date = reader.nextLine();
-				System.out.println();
+				System.out.println("Tell me date of the purchase: ");
+				Date date = new Date(type);
+				shop.searchOrdersByDate();
 				break;
 
 			}

@@ -187,7 +187,7 @@ public class Shop {
         return;
     };
 
-    public int buscarPedidoPorFecha(ArrayList<Order> orders, Date fechaMinima, Date fechaMaxima) {
+    public int searchOrdersByDate(java.util.Date dateMin, java.util.Date dateMax) {
         int inicio = 0;
         int fin = orders.size() - 1;
 
@@ -195,15 +195,15 @@ public class Shop {
             int medio = inicio + (fin - inicio) / 2;
             java.util.Date fechaPedido = orders.get(medio).getDate();
 
-            if (fechaPedido.equals(fechaMinima) || fechaPedido.equals(fechaMaxima)) {
+            if (fechaPedido.equals(dateMin) || fechaPedido.equals(dateMax)) {
                 return medio; // Pedido encontrado en los extremos del rango
             }
 
-            if (fechaPedido.after(fechaMinima) && fechaPedido.before(fechaMaxima)) {
+            if (fechaPedido.after(dateMin) && fechaPedido.before(dateMax)) {
                 return medio; // Pedido encontrado dentro del rango
             }
 
-            if (fechaPedido.compareTo(fechaMaxima) > 0) {
+            if (fechaPedido.compareTo(dateMax) > 0) {
                 fin = medio - 1; // Buscar en la mitad izquierda
             } else {
                 inicio = medio + 1; // Buscar en la mitad derecha
