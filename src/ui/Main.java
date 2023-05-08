@@ -77,10 +77,10 @@ public class Main {
 					addsetup2();
 					break;
 				case 5:
-					shop.writeGsonInventory();
+					shop.jsonInventoryInfo("inventoryInfo.json");
 					break;
 				case 6:
-					shop.jsonInventoryInfo("inventoryInfo.json");
+					shop.writeGsonInventory();
 					break;
 				case 7:
 					shop.showInv();

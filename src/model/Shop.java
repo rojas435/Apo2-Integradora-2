@@ -1,4 +1,6 @@
 package model;
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
@@ -15,10 +17,13 @@ public class Shop {
 
     private ArrayList<Order> orders;
 
+    private Gson gson;
+
 
     public Shop(){
         this.inventory = new ArrayList<>();
         this.orders = new ArrayList<>();
+        this.gson = new Gson();
     }
 
     public ArrayList<Product> showInv(){
@@ -600,29 +605,35 @@ public class Shop {
         }
     }
 
-    public void writeGsonInventory(){
+    public void writeGsonInventory() {
+        if (inventory != null) {
+            String json = gson.toJson(inventory);
 
-        String json = gson.toJson(inventory);
-
-        try{
-            FileOutputStream fos = new FileOutputStream(new File("inventoryInfo.json"));
-            fos.write(json.getBytes(StandardCharsets.UTF_8));
-            fos.close();
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
+            try {
+                File dataDirectory = new File("src/outs_or_inputs");
+                if (!dataDirectory.exists()) {
+                    dataDirectory.mkdir();
+                }
+                File inventoryInfoFile = new File(dataDirectory, "inventoryInfo.json");
+                FileOutputStream fos = new FileOutputStream(inventoryInfoFile);
+                fos.write(json.getBytes(StandardCharsets.UTF_8));
+                fos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void jsonInventoryInfo(String filePath){
         Gson gson = new Gson();
-        File dataDirectory = new File("src\\outs_or_inputs");
+        File dataDirectory = new File("src/outs_or_inputs");
         File inventoryInfoFile = new File(dataDirectory, filePath);
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(inventoryInfoFile));
-            Product[] products = gson.fromJson(reader, Product.class);
+            Product[] products = gson.fromJson(reader, Product[].class);
             reader.close();
 
             for(int i = 0; i<products.length; i++){
