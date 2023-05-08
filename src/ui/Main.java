@@ -61,8 +61,7 @@ public class Main {
 
 			switch(option){
 				case 1:
-					addsetup();
-					//addProduct();
+					addProduct();
 					shop.showInv();
 					break;
 				case 2:
@@ -73,8 +72,7 @@ public class Main {
 					search();
 					break;
 				case 4:
-					//createOrder();
-					addsetup2();
+					createOrder();
 					break;
 				case 5:
 					shop.jsonInventoryInfo("inventoryInfo.json");
@@ -98,55 +96,18 @@ public class Main {
 	 * @param: Option that gives the user
 	 * @return: Validates the option and if the user gives a number that doesnt exist will give (Invalid Option) or even with letters (Invalid Option)
 	 */	
-	public int validateIntegerOption(){
-		int option = 0; 
+	public int validateIntegerOption() {
+		int option = 0;
 
-		if(reader.hasNextInt()){
-			option = reader.nextInt(); 
-		}
-		else{
-			reader.nextLine(); 
-			option = -1; 
+		if (reader.hasNextInt()) {
+			option = reader.nextInt();
+		} else {
+			reader.nextLine();
+			option = -1;
 		}
 
-		return option; 
+		return option;
 	}
-
-	public void addsetup(){
-		shop.addProduct("Jojoa", "description", 20,10, 11,10);
-		shop.addProduct("Felipe", "description", 50,5, 5,20);
-		shop.addProduct("Santiago", "las de industrial", 1,1, 6,1);
-		shop.addProduct("Joe", "description", 40,12, 11,16);
-		shop.addProduct("Checho", "description", 30,7, 5,28);
-		shop.addProduct("Santiago", "el negro", 100,1, 11,127);
-	};
-
-	public void addsetup2(){
-		int index = 0;
-		index = shop.createOrder("P1");
-		shop.addProductToOrder(index, "Jojoa", 2);
-		shop.addProductToOrder(index, "Felipe", 1);
-		shop.processOrder(index);
-
-		index = shop.createOrder("P2");
-		shop.addProductToOrder(index, "Joe", 4);
-		shop.addProductToOrder(index, "Checho", 2);
-		shop.processOrder(index);
-
-		index = shop.createOrder("P3");
-		shop.addProductToOrder(index, "Checho", 1);
-		shop.processOrder(index);
-
-		index = shop.createOrder("P4");
-		shop.addProductToOrder(index, "Jojoa", 1);
-		shop.addProductToOrder(index, "Santiago", 1);
-		shop.processOrder(index);
-
-		index = shop.createOrder("P5");
-		shop.addProductToOrder(index, "Felipe", 2);
-		shop.addProductToOrder(index, "Checho", 1);
-		shop.processOrder(index);
-	};
 
 
 	public void addProduct(){

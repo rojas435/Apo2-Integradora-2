@@ -25,6 +25,13 @@ public class TestAplication {
         shop.createOrder("Felipe");
         shop.addProductToOrder(0, "Phone", 2);
         shop.addProductToOrder(0, "Book 1", 2);
+        shop.checkOrder(0);
+        shop.createOrder("Jacob");
+        shop.addProductToOrder(1, "Phone", 2);
+        shop.addProductToOrder(1, "Book 1", 2);
+        shop.createOrder("Chris");
+        shop.addProductToOrder(2, "Phone", 2);
+        shop.addProductToOrder(2, "Book 1", 2);
         return shop;
     }
 
@@ -43,7 +50,7 @@ public class TestAplication {
     @Test
     public void removeProductTestWorks(){
         Shop shop = setupStage1();
-        shop.eliminateProduct("Book 1");
+        shop.eliminateProduct("Book 1", 5);
         Product product2 = new Product("Phone", " ", 999, 10, 2, 20);
         assertEquals(product2.getName(), shop.showInv().get(0).getName());
     };
@@ -85,8 +92,10 @@ public class TestAplication {
     };
 
     @Test
-    public void searchOrderTotalPrice(){
-
+    public void searchOrderTotalPrice() throws NoSuchFieldException, IllegalAccessException {
+        Shop shop = setupStage2();
+        Order order = new Order("Francis");
+        assertEquals(2, shop.binarySearchOMin("totalPrice", 1000.0, order.comparatorForUse(2)));
     };
 
     @Test
