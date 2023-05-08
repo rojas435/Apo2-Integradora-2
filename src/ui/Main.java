@@ -77,10 +77,10 @@ public class Main {
 					addsetup2();
 					break;
 				case 5:
-					loadInventory();
+					shop.writeGsonInventory();
 					break;
 				case 6:
-					saveInventory();
+					shop.jsonInventoryInfo("inventoryInfo.json");
 					break;
 				case 7:
 					shop.showInv();
@@ -370,8 +370,4 @@ public class Main {
 		};
 		return;
 	}
-
-	public void loadInventory(){};
-
-	public void saveInventory(){};
 }

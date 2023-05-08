@@ -1,5 +1,7 @@
 package model;
+import java.io.*;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -595,6 +597,42 @@ public class Shop {
                 System.out.println(list.get(i).toString());
                 i--;
             }
+        }
+    }
+
+    public void writeGsonInventory(){
+
+        String json = gson.toJson(inventory);
+
+        try{
+            FileOutputStream fos = new FileOutputStream(new File("inventoryInfo.json"));
+            fos.write(json.getBytes(StandardCharsets.UTF_8));
+            fos.close();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void jsonInventoryInfo(String filePath){
+        Gson gson = new Gson();
+        File dataDirectory = new File("src\\outs_or_inputs");
+        File inventoryInfoFile = new File(dataDirectory, filePath);
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(inventoryInfoFile));
+            Product[] products = gson.fromJson(reader, Product.class);
+            reader.close();
+
+            for(int i = 0; i<products.length; i++){
+                inventory.add(products[i]);
+            }
+
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found");
+        }catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
