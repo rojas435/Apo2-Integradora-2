@@ -146,7 +146,10 @@ public class Main {
 		System.out.println("Dime cuantas veces se han comprando este producto");
 		int totalSales = reader.nextInt();
 
-		if(shop.addProduct(name, description, price, quantity, typeOfProduct,totalSales)){
+		System.out.println("If product is already in inventory do you wish to just add amount");
+		int option = reader.nextInt();
+
+		if(shop.addProduct(name, description, price, quantity, typeOfProduct,totalSales, option)){
 			System.out.println("Se ha añadido exitosamente");
 		}else{
 			System.out.println("Error, no se ha podido añadir");

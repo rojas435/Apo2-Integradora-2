@@ -7,21 +7,22 @@ import org.junit.jupiter.api.Test;
 import model.*;
 import ui.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TestAplication {
 
     public Shop setupStage1(){
         Shop shop = new Shop();
-        shop.addProduct("Book 1", "A great book", 10.99, 5, 1, 0);
-        shop.addProduct("Phone", " ", 999, 10, 2, 20);
+        shop.addProduct("Book 1", "A great book", 10.99, 5, 1, 0, 1);
+        shop.addProduct("Phone", " ", 999, 10, 2, 20, 1);
         return shop;
     };
 
     public Shop setupStage2(){
         Shop shop = new Shop();
-        shop.addProduct("Book 1", "A great book", 10.99, 5, 1, 0);
-        shop.addProduct("Phone", " ", 999, 10, 2, 20);
+        shop.addProduct("Book 1", "A great book", 10.99, 5, 1, 0, 1);
+        shop.addProduct("Phone", " ", 999, 10, 2, 20, 1);
         shop.createOrder("Felipe");
         shop.addProductToOrder(0, "Phone", 2);
         shop.addProductToOrder(0, "Book 1", 2);
@@ -48,11 +49,23 @@ public class TestAplication {
     };
 
     @Test
+    public void addProductTestDontAdd(){
+        Shop shop = setupStage1();
+        assertEquals(false, shop.addProduct("Book 1", "", 20.0, 1, 11, 0, 0));
+    };
+
+    @Test
     public void removeProductTestWorks(){
         Shop shop = setupStage1();
         shop.eliminateProduct("Book 1", 5);
         Product product2 = new Product("Phone", " ", 999, 10, 2, 20);
         assertEquals(product2.getName(), shop.showInv().get(0).getName());
+    };
+
+    @Test
+    public void removeProductTestDontAdd(){
+        Shop shop = setupStage1();
+        assertEquals(false, shop.eliminateProduct("Book 1", 6));
     };
 
     @Test
@@ -79,8 +92,8 @@ public class TestAplication {
     @Test
     public void searchOrderName() throws NoSuchFieldException, IllegalAccessException {
         Shop shop = setupStage2();
-        Order order = new Order("Jacob");
-        assertEquals(0, shop.binarySearchOS("name", "Felipe", order.comparatorForUse(1)));
+        Order order = new Order("Francesca");
+        assertEquals(1, shop.binarySearchOS("name", "Felipe", order.comparatorForUse(1)));
     };
 
     @Test
@@ -99,11 +112,27 @@ public class TestAplication {
     };
 
     @Test
-    public void searchOrderDate(){
-
+    public void searchOrderDate() throws NoSuchFieldException, IllegalAccessException {
+        Shop shop = setupStage2();
+        Order order = new Order("Francis");
+        LocalDate date = LocalDate.of(2023,5,7);
+        assertEquals(0, shop.binarySearchODate("date", date, order.comparatorForUse(3)));
     };
 
     @Test
-    public void createOrder(){};
+    public void createOrderEnoughStock(){
+        Shop shop = setupStage1();
+        shop.createOrder("Felipe");
+        shop.addProductToOrder(0, "Phone", 2);
+        assertEquals(true, shop.stockCheck(0));
+    };
+
+    @Test
+    public void createOrderNoteEnoughStock(){
+        Shop shop = setupStage1();
+        shop.createOrder("Felipe");
+        shop.addProductToOrder(0, "Phone", 21);
+        assertEquals(false, shop.stockCheck(0));
+    };
 
 }

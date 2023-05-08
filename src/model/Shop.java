@@ -15,14 +15,11 @@ public class Shop {
 
     private Gson gson;
 
-    private Scanner reader;
-
 
     public Shop(){
         this.inventory = new ArrayList<>();
         this.orders = new ArrayList<>();
         this.gson = new Gson();
-        this.reader = new Scanner(System.in);
     }
 
     public ArrayList<Product> showInv(){
@@ -40,12 +37,10 @@ public class Shop {
 
 
 
-    public boolean addProduct(String name, String description, double price, int quantity, int typeOfProduct, int totalSales){
+    public boolean addProduct(String name, String description, double price, int quantity, int typeOfProduct, int totalSales, int option){
         for(int i = 0; i<inventory.size(); i++){
             if(inventory.get(i).getName().equals(name)){
-                System.out.println("You have already registered item do you wish to (1) Add quantity or (2) Return to menu");
-                int opcion = reader.nextInt();
-                if(opcion==1){
+                if(option==1){
                     inventory.get(i).setQuantity(inventory.get(i).getQuantity()+quantity);
                     return true;
                 }else{
@@ -57,7 +52,7 @@ public class Shop {
         return true;
     }
 
-    public void eliminateProduct(String name, int amount){
+    public boolean eliminateProduct(String name, int amount){
         for(int i = 0; i< inventory.size()-1; i++){
             if(inventory.get(i)!=null){
                 if(inventory.get(i).getName().equals(name)){
@@ -69,13 +64,14 @@ public class Shop {
                         System.out.println("Product inventory lowered");
                     } else {
                         System.out.println("You are trying to remove more than there is in inventory");
+                        return false;
                     }
 
-                    return;
+                    return true;
                 }
             }
         }
-        return;
+        return false;
     };
 
 
