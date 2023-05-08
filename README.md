@@ -8,7 +8,7 @@ IDE: Intellij IDEA, Visual Studio Code
 
 Crew:
 
-Juan Sebastian Gonzalez, Juan Felipe Jojoa Crespo A00382042 , Felipe Rojas Prado
+Juan Sebastian Gonzalez A00371810, Juan Felipe Jojoa Crespo A00382042 , Felipe Rojas Prado A00393918
 
 Teacher:
 
