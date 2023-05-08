@@ -61,8 +61,8 @@ public class Main {
 
 			switch(option){
 				case 1:
-					//addProduct();
 					addsetup();
+					//addProduct();
 					shop.showInv();
 					break;
 				case 2:
@@ -306,9 +306,11 @@ public class Main {
 	public void eliminateProduct(){
 		System.out.println("\nPlease choose a product to eliminate");
 		shop.showInv();
+		reader.nextLine();
 		String productName = reader.nextLine();
-		shop.eliminateProduct(productName);
-		System.out.println("Product eliminated!");
+		System.out.println("\nHow many do you wish to remove");
+		int amount = reader.nextInt();
+		shop.eliminateProduct(productName, amount);
 	};
 
 	public void createOrder() {

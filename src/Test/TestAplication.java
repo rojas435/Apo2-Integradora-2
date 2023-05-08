@@ -81,7 +81,7 @@ public class TestAplication {
         Shop shop = setupStage2();
         Order order = new Order("Jacob");
         Order order2 = new Order("Chris");
-       // assertEquals(-1, shop.binarySearchOS("name", "Francis", order.comparatorForUse(1)));
+        assertEquals(-1, shop.binarySearchOS("name", "Francis", order.comparatorForUse(1)));
     };
 
     @Test

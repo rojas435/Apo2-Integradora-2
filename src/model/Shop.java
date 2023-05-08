@@ -6,11 +6,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Shop {
     private ArrayList<Product> inventory;
@@ -19,11 +15,14 @@ public class Shop {
 
     private Gson gson;
 
+    private Scanner reader;
+
 
     public Shop(){
         this.inventory = new ArrayList<>();
         this.orders = new ArrayList<>();
         this.gson = new Gson();
+        this.reader = new Scanner(System.in);
     }
 
     public ArrayList<Product> showInv(){
@@ -42,18 +41,36 @@ public class Shop {
 
 
     public boolean addProduct(String name, String description, double price, int quantity, int typeOfProduct, int totalSales){
-        if(inventory.add(new Product(name, description, price, quantity, typeOfProduct, totalSales))){
-            return true;
-        }else{
-            return false;
+        for(int i = 0; i<inventory.size(); i++){
+            if(inventory.get(i).getName().equals(name)){
+                System.out.println("You have already registered item do you wish to (1) Add quantity or (2) Return to menu");
+                int opcion = reader.nextInt();
+                if(opcion==1){
+                    inventory.get(i).setQuantity(inventory.get(i).getQuantity()+quantity);
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }
+        inventory.add(new Product(name, description, price, quantity, typeOfProduct, totalSales));
+        return true;
     }
 
-    public void eliminateProduct(String name){
+    public void eliminateProduct(String name, int amount){
         for(int i = 0; i< inventory.size()-1; i++){
             if(inventory.get(i)!=null){
                 if(inventory.get(i).getName().equals(name)){
-                    inventory.remove(inventory.get(i));
+                    if(inventory.get(i).getQuantity()==amount){
+                        inventory.remove(inventory.get(i));
+                        System.out.println("Product eliminated");
+                    } else if (inventory.get(i).getQuantity()>amount) {
+                        inventory.get(i).setQuantity(inventory.get(i).getQuantity()-amount);
+                        System.out.println("Product inventory lowered");
+                    } else {
+                        System.out.println("You are trying to remove more than there is in inventory");
+                    }
+
                     return;
                 }
             }
